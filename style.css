@@ -1,0 +1,349 @@
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Poppins, sans-serif;
+            background: #08120E;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        @keyframes marquee {
+
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: Orbitron, sans-serif;
+        }
+
+        /* ================= BACKGROUND GLOW ================= */
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        @keyframes shine {
+            0% {
+                transform: translateX(-120%);
+            }
+
+            100% {
+                transform: translateX(120%);
+            }
+        }
+
+        .bg-light {
+            position: fixed;
+            width: 750px;
+            height: 750px;
+            border-radius: 50%;
+            background: #2AC46C;
+            filter: blur(180px);
+            top: -250px;
+            left: -220px;
+            opacity: .22;
+            z-index: -2;
+            animation: move1 15s ease-in-out infinite alternate;
+        }
+
+        .bg-light2 {
+            position: fixed;
+            width: 750px;
+            height: 750px;
+            border-radius: 50%;
+            background: #254B3C;
+            filter: blur(180px);
+            bottom: -250px;
+            right: -220px;
+            opacity: .35;
+            z-index: -2;
+            animation: move2 18s ease-in-out infinite alternate;
+        }
+
+        @keyframes move1 {
+            to {
+                transform: translate(220px, 180px);
+            }
+        }
+
+        @keyframes move2 {
+            to {
+                transform: translate(-220px, -150px);
+            }
+        }
+
+        /* ================= GRID ================= */
+
+        .grid-bg {
+
+            background-color: #08120E;
+
+            background-image:
+                linear-gradient(rgba(42, 196, 108, .06) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(42, 196, 108, .06) 1px, transparent 1px);
+
+            background-size: 60px 60px;
+
+        }
+
+        .logo {
+            animation: logoGlow 3s ease-in-out infinite;
+            transition: .35s;
+        }
+
+        .logo:hover {
+            transform: scale(1.1) rotate(6deg);
+        }
+
+        .logo-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: logoFloat 2.5s ease-in-out infinite;
+        }
+
+        @keyframes logoFloat {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-5px) rotate(8deg);
+            }
+        }
+
+        @keyframes logoGlow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(42, 196, 108, .35);
+            }
+
+            50% {
+                box-shadow:
+                    0 0 35px rgba(42, 196, 108, .6),
+                    0 0 60px rgba(42, 196, 108, .25);
+            }
+        }
+
+        /* ================= GLASS ================= */
+
+        .glass {
+
+            background: rgba(20, 35, 28, .55);
+
+            backdrop-filter: blur(18px);
+
+            -webkit-backdrop-filter: blur(18px);
+
+            border: 1px solid rgba(42, 196, 108, .15);
+
+            box-shadow:
+                0 10px 35px rgba(0, 0, 0, .25);
+
+            transition: .35s;
+
+        }
+
+        .glass:hover {
+
+            border-color: #2AC46C;
+
+            transform: translateY(-4px);
+
+        }
+
+        /* ================= BUTTON ================= */
+
+        .btn {
+
+            background: linear-gradient(135deg, #2AC46C, #254B3C);
+
+            color: #fff;
+
+            transition: .35s;
+
+            box-shadow: 0 12px 30px rgba(42, 196, 108, .25);
+
+        }
+
+        .btn:hover {
+
+            transform: translateY(-5px);
+
+            box-shadow: 0 0 35px rgba(42, 196, 108, .45);
+
+        }
+
+        /* ================= TILES ================= */
+
+        .tile {
+
+            width: 78px;
+            height: 78px;
+
+            background: linear-gradient(#F1D5A4, #D9AF68);
+
+            border: 2px solid rgba(255, 255, 255, .12);
+
+            border-radius: 16px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 34px;
+
+            font-weight: 700;
+
+            color: #3F2A12;
+
+            box-shadow:
+                inset 0 2px 6px rgba(255, 255, 255, .35),
+                0 12px 25px rgba(0, 0, 0, .35);
+
+            animation: float 4s ease-in-out infinite;
+
+            transition: .3s;
+
+        }
+
+        .tile:hover {
+
+            transform: translateY(-8px) scale(1.08);
+
+            box-shadow:
+                0 0 25px rgba(42, 196, 108, .45);
+
+        }
+
+        .tile:nth-child(even) {
+
+            animation-delay: .6s;
+
+        }
+
+        @keyframes float {
+
+            50% {
+
+                transform: translateY(-12px) rotate(4deg);
+
+            }
+
+        }
+
+        /* ================= LINKS ================= */
+
+        a {
+
+            transition: .3s;
+
+        }
+
+        a:hover {
+
+            color: #2AC46C;
+
+        }
+
+        /* ================= SCROLLBAR ================= */
+
+        ::-webkit-scrollbar {
+
+            width: 10px;
+
+        }
+
+        ::-webkit-scrollbar-track {
+
+            background: #08120E;
+
+        }
+
+        ::-webkit-scrollbar-thumb {
+
+            background: #2AC46C;
+
+            border-radius: 10px;
+
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+
+            background: #39d97c;
+
+        }
+
+        /* ================= SELECTION ================= */
+
+        ::selection {
+
+            background: #2AC46C;
+
+            color: #fff;
+
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media(max-width:768px) {
+
+            .tile {
+
+                width: 62px;
+                height: 62px;
+                font-size: 28px;
+
+            }
+
+            .bg-light,
+            .bg-light2 {
+
+                width: 500px;
+                height: 500px;
+
+            }
+
+        }
+
+        @media(max-width:480px) {
+
+            .tile {
+
+                width: 52px;
+                height: 52px;
+                font-size: 24px;
+
+            }
+
+        }

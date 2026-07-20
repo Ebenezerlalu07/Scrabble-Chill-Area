@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Scrabble Arena</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+
+
+
+</head>
+
+<body class="grid-bg">
+
+
+
+    <div class="bg-light"></div>
+    <div class="bg-light2"></div>
+
+
+    <!-- ================= HEADER ================= -->
+    <header class="fixed top-0 left-0 w-full z-50
+bg-white/5 backdrop-blur-xl
+border-b border-white/10
+shadow-lg shadow-black/10
+transition-all duration-300">
+
+        <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+
+            <div class="flex items-center justify-between h-20">
+
+                <!-- Logo -->
+                <a href="#" class="flex items-center gap-3">
+
+                    <div class="relative flex items-center justify-center w-12 h-12 rounded-xl overflow-hidden
+           bg-gradient-to-br from-[#2AC46C] via-[#249B58] to-[#254B3C]
+           shadow-[0_0_25px_rgba(42,196,108,0.45)]
+           hover:scale-110 transition-all duration-300">
+
+                        <!-- Animated Glow -->
+                        <div
+                            class="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-white/20 to-transparent animate-[shine_3s_linear_infinite]">
+                        </div>
+
+                        <!-- Rotating Border -->
+                        <div
+                            class="absolute inset-0 rounded-xl border border-white/20 animate-[spin_8s_linear_infinite]">
+                        </div>
+
+                        <!-- Logo -->
+                        <div class="relative flex items-center justify-center w-12 h-12 rounded-xl overflow-hidden
+           bg-gradient-to-br from-[#2AC46C] to-[#254B3C]
+           shadow-[0_0_30px_rgba(42,196,108,0.45)]
+           logo">
+
+                            <!-- Glow Ring -->
+                            <div class="absolute inset-0 rounded-xl border border-white/20"></div>
+
+                            <!-- Animated Dice -->
+                            <span class="relative z-10 text-2xl logo-icon">
+                                🎲
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div>
+
+                        <h2 class="text-xl lg:text-2xl font-bold tracking-widest text-white">
+                            SCRABBLE
+                        </h2>
+
+                        <p class="text-xs tracking-[4px] uppercase text-purple-300">
+                            Chill Arena
+                        </p>
+
+                    </div>
+
+                </a>
+
+                <!-- Navigation -->
+                <nav class="hidden lg:flex items-center gap-10 text-gray-300">
+
+                    <a href="#" class="hover:text-white duration-300">Features</a>
+                    <a href="#" class="hover:text-white duration-300">Leaderboard</a>
+                    <a href="#" class="hover:text-white duration-300">Game Modes</a>
+                    <a href="#" class="hover:text-white duration-300">Contact</a>
+
+                </nav>
+
+                <!-- Buttons -->
+                <div class="hidden lg:flex gap-4">
+
+                    <button
+                        class="px-6 py-2.5 rounded-full border border-white/20 bg-white/5 backdrop-blur-lg hover:bg-white/10 transition">
+                        Login
+                    </button>
+
+                    <button
+                        class="px-7 py-2.5 rounded-full bg-gradient-to-r from-[#2AC46C] to-[#254B3C] hover:from-[#35D67A] hover:to-[#2E5E4B] hover:scale-105 duration-300 shadow-lg shadow-[#2AC46C]/30">
+                        Play Now
+                    </button>
+
+                </div>
+
+                <!-- Mobile Menu -->
+                <button id="menuBtn"
+                    class="lg:hidden w-11 h-11 rounded-xl bg-white/10 backdrop-blur-lg border border-white/10 flex items-center justify-center">
+
+                    ☰
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+
+
+    <!-- HERO -->
+
+    <section class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-12 lg:py-24">
+
+        <div class="grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
+
+            <!-- LEFT -->
+            <div class="order-2 lg:order-1 text-center lg:text-left">
+
+                <span class="glass inline-flex items-center px-5 py-2 rounded-full text-[#2AC46C] text-sm md:text-base">
+
+                    🔥 Multiplayer Word Battle
+
+                </span>
+
+                <h1 class="mt-6 font-black leading-[1.05] text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
+
+                    <span class="block text-[#F1D5A4]">
+                        Chill Play
+                    </span>
+
+                    <span class="block text-white">
+                        SCORE WIN.
+                    </span>
+
+                </h1>
+
+                <p class="mt-6 text-gray-300 leading-8 max-w-xl mx-auto lg:mx-0 text-base md:text-lg">
+
+                    Grab a cup of coffee, gather your friends, and let the words flow.
+                    We'll handle the scores, timers, and turns, so you can simply
+                    chill, play, and enjoy every moment together.
+
+                </p>
+
+                <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+
+                    <button class="btn px-8 py-4 rounded-2xl text-base md:text-lg w-full sm:w-auto">
+
+                        ▶ Play Now
+
+                    </button>
+
+                    <button class="glass px-8 py-4 rounded-2xl w-full sm:w-auto">
+
+                        Join Room
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- RIGHT -->
+
+            <div class="order-1 lg:order-2 flex justify-center">
+
+                <div class="relative w-full max-w-[620px] aspect-square flex items-center justify-center">
+
+                    <!-- Tiles -->
+
+                    <div class="grid grid-cols-4 gap-2 sm:gap-3 md:gap-4">
+
+                        <div class="tile">S</div>
+                        <div class="tile">C</div>
+                        <div class="tile">R</div>
+                        <div class="tile">A</div>
+
+                        <div class="tile">B</div>
+                        <div class="tile">B</div>
+                        <div class="tile">L</div>
+                        <div class="tile">E</div>
+
+                        <div class="tile">P</div>
+                        <div class="tile">L</div>
+                        <div class="tile">A</div>
+                        <div class="tile">Y</div>
+
+                        <div class="tile">W</div>
+                        <div class="tile">I</div>
+                        <div class="tile">N</div>
+                        <div class="tile">!</div>
+
+                    </div>
+
+                    <!-- Glow -->
+
+                    <div class="absolute inset-0 -z-10 flex items-center justify-center">
+
+                        <div
+                            class="w-[90%] h-[90%] rounded-full bg-gradient-to-br from-[#2AC46C] via-[#1f8d50] to-[#254B3C] blur-[150px] md:blur-[180px] opacity-35 animate-pulse">
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+
+    <section class="max-w-7xl mx-auto px-6 py-20">
+
+        <div class="flex justify-between items-center mb-12">
+
+            <div>
+
+                <span class="text-purple-400 uppercase tracking-[6px]">
+                    Leaderboard
+                </span>
+
+                <h2 class="text-5xl font-bold mt-3">
+                    Players
+                </h2>
+
+            </div>
+
+            <button class="glass px-6 py-3 rounded-full">
+                View All
+            </button>
+
+        </div>
+
+        <div class="grid lg:grid-cols-3 gap-8">
+
+            <div class="glass rounded-3xl p-8 flex items-center gap-5">
+
+                <img src="/Assets/ebenezer.jpg" class="w-20 h-20 rounded-full">
+
+                <div>
+
+                    <h3 class="text-2xl font-bold">
+                        Ebenezer C Lalu
+                    </h3>
+
+                    <p class="text-yellow-400">
+                        🥇 Champion
+                    </p>
+
+                    <p class="text-gray-400 mt-2">
+                        12,450 Points
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="glass rounded-3xl p-8 flex items-center gap-5">
+
+                <img src="/Assets/Sherin.jpg" class="w-20 h-20 rounded-full">
+
+                <div>
+
+                    <h3 class="text-2xl font-bold">
+                        Sherin Mathew
+                    </h3>
+
+                    <p class="text-gray-300">
+                        🥈 Master
+                    </p>
+
+                    <p class="text-gray-400 mt-2">
+                        10,870 Points
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="glass rounded-3xl p-8 flex items-center gap-5">
+
+                <img src="/Assets/Rijo.jpg" class="w-20 h-20 rounded-full">
+
+                <div>
+
+                    <h3 class="text-2xl font-bold">
+                        Rejo
+                    </h3>
+
+                    <p class="text-orange-400">
+                        🥉 Diamond
+                    </p>
+
+                    <p class="text-gray-400 mt-2">
+                        9,980 Points
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="glass rounded-3xl p-8 flex items-center gap-5">
+
+                <img src="/Assets/dennies.jpeg" class="w-20 h-20 rounded-full">
+
+                <div>
+
+                    <h3 class="text-2xl font-bold">
+                        Dennies Mathew
+                    </h3>
+
+                    <p class="text-orange-400">
+                        🥉 Diamond
+                    </p>
+
+                    <p class="text-gray-400 mt-2">
+                        9,980 Points
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section><br>
+
+
+    <!-- ================= GAME MODES ================= -->
+
+    <section class="max-w-7xl mx-auto px-6 py-20">
+
+        <div class="text-center mb-16">
+
+            <span class="text-purple-400 uppercase tracking-[6px]">
+                Game Modes
+            </span>
+
+            <h2 class="text-5xl font-bold mt-4">
+                Choose Your Challenge
+            </h2>
+
+            <p class="text-gray-400 mt-5 max-w-2xl mx-auto">
+                Play casual matches, speed battles or create custom tournaments with your friends.
+            </p>
+
+        </div>
+
+        <div class="grid lg:grid-cols-3 gap-8">
+
+            <!-- Card -->
+
+            <div class="glass rounded-3xl p-8 hover:scale-105 duration-300">
+
+                <div class="text-6xl">🎲</div>
+
+                <h3 class="text-3xl font-bold mt-6">
+                    Classic
+                </h3>
+
+                <p class="text-gray-400 mt-4 leading-8">
+                    Traditional Scrabble experience with no rush.
+                    Perfect for family and friends.
+                </p>
+
+                <ul class="space-y-3 mt-8 text-gray-300">
+
+                    <li>✔ 2–4 Players</li>
+                    <li>✔ Unlimited Time</li>
+                    <li>✔ Standard Rules</li>
+
+                </ul>
+
+                <button class="btn w-full py-4 rounded-xl mt-10">
+                    Play Classic
+                </button>
+
+            </div>
+
+            <!-- Card -->
+
+            <div class="glass rounded-3xl p-8 border border-purple-600">
+
+                <div class="text-6xl">⚡</div>
+
+                <h3 class="text-3xl font-bold mt-6">
+                    Blitz Mode
+                </h3>
+
+                <p class="text-gray-400 mt-4 leading-8">
+                    Fast-paced word battles.
+                    60 seconds each turn.
+                    Highest score wins.
+                </p>
+
+                <ul class="space-y-3 mt-8 text-gray-300">
+
+                    <li>✔ 60 Second Timer</li>
+                    <li>✔ Bonus Multipliers</li>
+                    <li>✔ Competitive Ranking</li>
+
+                </ul>
+
+                <button class="btn w-full py-4 rounded-xl mt-10">
+                    Play Blitz
+                </button>
+
+            </div>
+
+            <!-- Card -->
+
+            <div class="glass rounded-3xl p-8 hover:scale-105 duration-300">
+
+                <div class="text-6xl">🏆</div>
+
+                <h3 class="text-3xl font-bold mt-6">
+                    Tournament
+                </h3>
+
+                <p class="text-gray-400 mt-4 leading-8">
+                    Host your own tournament and compete for the championship.
+                </p>
+
+                <ul class="space-y-3 mt-8 text-gray-300">
+
+                    <li>✔ Custom Rules</li>
+                    <li>✔ Live Scoreboard</li>
+                    <li>✔ Unlimited Players</li>
+
+                </ul>
+
+                <button class="btn w-full py-4 rounded-xl mt-10">
+                    Create Tournament
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ================= FEATURES ================= -->
+
+    <section class="max-w-7xl mx-auto px-6 py-10">
+
+        <div class="text-center mb-16">
+
+            <span class="text-purple-400 uppercase tracking-[5px]">
+                Features
+            </span>
+
+            <h2 class="text-5xl font-bold mt-5">
+                Everything You Need
+            </h2>
+
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+            <div class="glass p-8 rounded-3xl">
+
+                <div class="text-5xl">🎯</div>
+
+                <h3 class="text-2xl mt-6 font-bold">
+                    Live Score
+                </h3>
+
+                <p class="text-gray-400 mt-4">
+                    Automatic score calculation after every move.
+                </p>
+
+            </div>
+
+            <div class="glass p-8 rounded-3xl">
+
+                <div class="text-5xl">⏱</div>
+
+                <h3 class="text-2xl mt-6 font-bold">
+                    Smart Timer
+                </h3>
+
+                <p class="text-gray-400 mt-4">
+                    Built-in turn timer with sound alerts.
+                </p>
+
+            </div>
+
+            <div class="glass p-8 rounded-3xl">
+
+                <div class="text-5xl">👥</div>
+
+                <h3 class="text-2xl mt-6 font-bold">
+                    Multiplayer
+                </h3>
+
+                <p class="text-gray-400 mt-4">
+                    Invite friends and play together anywhere.
+                </p>
+
+            </div>
+
+            <div class="glass p-8 rounded-3xl">
+
+                <div class="text-5xl">📊</div>
+
+                <h3 class="text-2xl mt-6 font-bold">
+                    Statistics
+                </h3>
+
+                <p class="text-gray-400 mt-4">
+                    Track wins, words played and highest scores.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section><br>
+
+    <!-- ================= LEADERBOARD ================= -->
+
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="relative overflow-hidden ">
+
+        <!-- Background Glow -->
+        <div
+            class="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[900px] rounded-full bg-[#2AC46C]/10 blur-[220px]">
+        </div>
+
+        <!-- Giant Background Text -->
+        <h1 class="absolute inset-0 flex items-center justify-center
+               text-[18vw] md:text-[14vw]
+               font-black uppercase
+               text-white/[0.03]
+               tracking-[25px]
+               pointer-events-none">
+
+            SCRABBLE
+
+        </h1>
+
+        <div class="relative max-w-7xl mx-auto px-6 py-30">
+
+            <!-- Badge -->
+
+            <div class="flex justify-center">
+
+                <span
+                    class="px-6 py-2 rounded-full border border-[#2AC46C]/30 bg-[#2AC46C]/10 text-[#2AC46C] tracking-[3px] uppercase">
+
+                    The Ultimate Score Tracker
+
+                </span>
+
+            </div>
+
+            <!-- Heading -->
+
+            <h2 class="mt-10 text-center text-5xl md:text-7xl font-bold leading-tight">
+
+                Every
+
+                <span class="text-[#2AC46C]">
+
+                    Letter.
+
+                </span>
+
+                <br>
+
+                Every
+
+                <span class="text-[#2AC46C]">
+
+                    Score.
+
+                </span>
+
+                <br>
+
+                Every
+
+                <span class="text-[#2AC46C]">
+
+                    Victory.
+
+                </span>
+
+            </h2>
+
+
+
+            <!-- Buttons -->
+
+            <div class="mt-12 flex flex-wrap justify-center gap-5">
+
+                <button class="px-9 py-4 rounded-full bg-gradient-to-r from-[#2AC46C] to-[#254B3C]
+                       shadow-[0_0_35px_rgba(42,196,108,.35)]
+                       hover:scale-105 transition">
+
+                    🎲 Start Playing
+
+                </button>
+
+                <button class="px-9 py-4 rounded-full border border-[#2AC46C]/30
+                       bg-white/5 backdrop-blur-lg
+                       hover:bg-[#2AC46C]/10 transition">
+
+                    Learn More
+
+                </button>
+
+            </div>
+
+            <!-- Animated Words -->
+
+            <div class="mt-24 overflow-hidden">
+
+                <div class="flex gap-10 whitespace-nowrap animate-[marquee_18s_linear_infinite]">
+
+                    <span class="text-4xl font-bold text-[#2AC46C]">CHILL</span>
+
+                    <span class="text-4xl text-white">PLAY</span>
+
+                    <span class="text-4xl font-bold text-[#2AC46C]">SPELL</span>
+
+                    <span class="text-4xl text-white">SCORE</span>
+
+                    <span class="text-4xl font-bold text-[#2AC46C]">WIN</span>
+
+                    <span class="text-4xl text-white">REPEAT</span>
+
+                    <span class="text-4xl font-bold text-[#2AC46C]">CHAMPION</span>
+
+                    <span class="text-4xl text-white">FUN</span>
+
+                    <span class="text-4xl font-bold text-[#2AC46C]">FRIENDS</span>
+
+                    <!-- Repeat -->
+
+                    <span class="text-4xl font-bold text-[#2AC46C]">CHILL</span>
+
+                    <span class="text-4xl text-white">PLAY</span>
+
+                    <span class="text-4xl font-bold text-[#2AC46C]">SPELL</span>
+
+                    <span class="text-4xl text-white">SCORE</span>
+
+                    <span class="text-4xl font-bold text-[#2AC46C]">WIN</span>
+
+                </div>
+
+            </div>
+
+            <!-- Bottom -->
+
+            <div class="mt-24 pt-8 border-t border-[#2AC46C]/10 flex flex-col md:flex-row justify-between items-center">
+
+                <p class="text-gray-500">
+
+                    © 2026 Scrabble Arena
+
+                </p>
+
+                <p class="text-[#2AC46C] tracking-[5px] uppercase mt-4 md:mt-0">
+
+                    Crafted for Word Champions
+
+                </p>
+
+            </div>
+
+        </div><br><br>
+
+    </footer>
+
+    <script>
+        const menuBtn = document.getElementById("menuBtn");
+        const mobileMenu = document.getElementById("mobileMenu");
+        const menuIcon = document.getElementById("menuIcon");
+
+        menuBtn.addEventListener("click", () => {
+
+            mobileMenu.classList.toggle("hidden");
+
+            menuIcon.innerHTML = mobileMenu.classList.contains("hidden")
+                ? `<path stroke-linecap="round"
+                 stroke-linejoin="round"
+                 stroke-width="2"
+                 d="M4 6h16M4 12h16M4 18h16"/>`
+                : `<path stroke-linecap="round"
+                 stroke-linejoin="round"
+                 stroke-width="2"
+                 d="M6 18L18 6M6 6l12 12"/>`;
+
+        });
+    </script>
+
+</body>
+
+</html>
