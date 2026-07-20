@@ -29,59 +29,34 @@
 
 
     <!-- ================= HEADER ================= -->
-    <header class="fixed top-0 left-0 w-full z-50
-bg-white/5 backdrop-blur-xl
-border-b border-white/10
-shadow-lg shadow-black/10
-transition-all duration-300">
 
-        <div class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+    <header
+        class="fixed top-0 left-0 w-full z-50 bg-white/5 backdrop-blur-xl border-b border-white/10 shadow-lg shadow-black/10">
+
+        <div class="max-w-7xl mx-auto px-5 lg:px-8">
 
             <div class="flex items-center justify-between h-20">
 
                 <!-- Logo -->
+
                 <a href="#" class="flex items-center gap-3">
 
-                    <div class="relative flex items-center justify-center w-12 h-12 rounded-xl overflow-hidden
-           bg-gradient-to-br from-[#2AC46C] via-[#249B58] to-[#254B3C]
-           shadow-[0_0_25px_rgba(42,196,108,0.45)]
-           hover:scale-110 transition-all duration-300">
+                    <div
+                        class="relative flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-[#2AC46C] to-[#254B3C] shadow-[0_0_30px_rgba(42,196,108,.4)]">
 
-                        <!-- Animated Glow -->
-                        <div
-                            class="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-white/20 to-transparent animate-[shine_3s_linear_infinite]">
-                        </div>
-
-                        <!-- Rotating Border -->
-                        <div
-                            class="absolute inset-0 rounded-xl border border-white/20 animate-[spin_8s_linear_infinite]">
-                        </div>
-
-                        <!-- Logo -->
-                        <div class="relative flex items-center justify-center w-12 h-12 rounded-xl overflow-hidden
-           bg-gradient-to-br from-[#2AC46C] to-[#254B3C]
-           shadow-[0_0_30px_rgba(42,196,108,0.45)]
-           logo">
-
-                            <!-- Glow Ring -->
-                            <div class="absolute inset-0 rounded-xl border border-white/20"></div>
-
-                            <!-- Animated Dice -->
-                            <span class="relative z-10 text-2xl logo-icon">
-                                🎲
-                            </span>
-
-                        </div>
+                        <span class="text-2xl">
+                            🎲
+                        </span>
 
                     </div>
 
                     <div>
 
-                        <h2 class="text-xl lg:text-2xl font-bold tracking-widest text-white">
+                        <h2 class="text-xl font-bold tracking-widest text-white">
                             SCRABBLE
                         </h2>
 
-                        <p class="text-xs tracking-[4px] uppercase text-purple-300">
+                        <p class="text-xs tracking-[4px] uppercase text-[#2AC46C]">
                             Chill Arena
                         </p>
 
@@ -89,40 +64,86 @@ transition-all duration-300">
 
                 </a>
 
-                <!-- Navigation -->
+                <!-- Desktop Navigation -->
+
                 <nav class="hidden lg:flex items-center gap-10 text-gray-300">
 
                     <a href="#" class="hover:text-white duration-300">Features</a>
+
                     <a href="#" class="hover:text-white duration-300">Leaderboard</a>
+
                     <a href="#" class="hover:text-white duration-300">Game Modes</a>
+
                     <a href="#" class="hover:text-white duration-300">Contact</a>
 
                 </nav>
 
-                <!-- Buttons -->
+                <!-- Desktop Buttons -->
+
                 <div class="hidden lg:flex gap-4">
 
                     <button
-                        class="px-6 py-2.5 rounded-full border border-white/20 bg-white/5 backdrop-blur-lg hover:bg-white/10 transition">
-                        Login
-                    </button>
+                        class="px-7 py-2.5 rounded-full bg-gradient-to-r from-[#2AC46C] to-[#254B3C] hover:scale-105 duration-300">
 
-                    <button
-                        class="px-7 py-2.5 rounded-full bg-gradient-to-r from-[#2AC46C] to-[#254B3C] hover:from-[#35D67A] hover:to-[#2E5E4B] hover:scale-105 duration-300 shadow-lg shadow-[#2AC46C]/30">
                         Play Now
+
                     </button>
 
                 </div>
 
-                <!-- Mobile Menu -->
+                <!-- Mobile Button -->
+
                 <button id="menuBtn"
-                    class="lg:hidden w-11 h-11 rounded-xl bg-white/10 backdrop-blur-lg border border-white/10 flex items-center justify-center">
+                    class="lg:hidden w-11 h-11 flex items-center justify-center text-white text-3xl transition">
 
                     ☰
 
                 </button>
 
             </div>
+
+        </div>
+
+        <!-- ================= MOBILE MENU ================= -->
+
+        <div id="mobileMenu"
+            class="max-h-0 overflow-hidden transition-all duration-500 bg-[#08120E]/95 backdrop-blur-xl lg:hidden">
+
+            <nav class="flex flex-col py-6">
+
+                <a href="#" class="px-6 py-4 hover:bg-white/5">
+                    Features
+                </a>
+
+                <a href="#" class="px-6 py-4 hover:bg-white/5">
+                    Leaderboard
+                </a>
+
+                <a href="#" class="px-6 py-4 hover:bg-white/5">
+                    Game Modes
+                </a>
+
+                <a href="#" class="px-6 py-4 hover:bg-white/5">
+                    Contact
+                </a>
+
+                <div class="px-6 mt-5 space-y-3">
+
+                    <button class="w-full py-3 rounded-full border border-white/20">
+
+                        Login
+
+                    </button>
+
+                    <button class="w-full py-3 rounded-full bg-gradient-to-r from-[#2AC46C] to-[#254B3C]">
+
+                        Play Now
+
+                    </button>
+
+                </div>
+
+            </nav>
 
         </div>
 
@@ -171,7 +192,7 @@ transition-all duration-300">
 
                     <button class="btn px-8 py-4 rounded-2xl text-base md:text-lg w-full sm:w-auto">
 
-                        ▶ Play Now
+                        Play Now
 
                     </button>
 
@@ -322,6 +343,29 @@ transition-all duration-300">
 
                     <p class="text-gray-400 mt-2">
                         9,980 Points
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="glass rounded-3xl p-8 flex items-center gap-5">
+
+                <img src="/Assets/Poul.jpg" class="w-20 h-20 rounded-full">
+
+                <div>
+
+                    <h3 class="text-2xl font-bold">
+                        Paul
+                    </h3>
+
+                    <p class="text-orange-400">
+                        🥉 Diamond
+                    </p>
+
+                    <p class="text-gray-400 mt-2">
+                        9,500 Points
                     </p>
 
                 </div>
@@ -575,13 +619,6 @@ transition-all duration-300">
 
             <div class="flex justify-center">
 
-                <span
-                    class="px-6 py-2 rounded-full border border-[#2AC46C]/30 bg-[#2AC46C]/10 text-[#2AC46C] tracking-[3px] uppercase">
-
-                    The Ultimate Score Tracker
-
-                </span>
-
             </div>
 
             <!-- Heading -->
@@ -682,48 +719,45 @@ transition-all duration-300">
 
             </div>
 
-            <!-- Bottom -->
 
-            <div class="mt-24 pt-8 border-t border-[#2AC46C]/10 flex flex-col md:flex-row justify-between items-center">
-
-                <p class="text-gray-500">
-
-                    © 2026 Scrabble Arena
-
-                </p>
-
-                <p class="text-[#2AC46C] tracking-[5px] uppercase mt-4 md:mt-0">
-
-                    Crafted for Word Champions
-
-                </p>
-
-            </div>
 
         </div><br><br>
 
     </footer>
 
     <script>
-        const menuBtn = document.getElementById("menuBtn");
-        const mobileMenu = document.getElementById("mobileMenu");
-        const menuIcon = document.getElementById("menuIcon");
 
-        menuBtn.addEventListener("click", () => {
+        document.addEventListener("DOMContentLoaded", () => {
 
-            mobileMenu.classList.toggle("hidden");
+            const menuBtn = document.getElementById("menuBtn");
+            const mobileMenu = document.getElementById("mobileMenu");
 
-            menuIcon.innerHTML = mobileMenu.classList.contains("hidden")
-                ? `<path stroke-linecap="round"
-                 stroke-linejoin="round"
-                 stroke-width="2"
-                 d="M4 6h16M4 12h16M4 18h16"/>`
-                : `<path stroke-linecap="round"
-                 stroke-linejoin="round"
-                 stroke-width="2"
-                 d="M6 18L18 6M6 6l12 12"/>`;
+            let open = false;
+
+            menuBtn.addEventListener("click", () => {
+
+                open = !open;
+
+                if (open) {
+
+                    mobileMenu.style.maxHeight = mobileMenu.scrollHeight + "px";
+
+                    menuBtn.innerHTML = "✕";
+
+                }
+
+                else {
+
+                    mobileMenu.style.maxHeight = "0px";
+
+                    menuBtn.innerHTML = "☰";
+
+                }
+
+            });
 
         });
+
     </script>
 
 </body>
