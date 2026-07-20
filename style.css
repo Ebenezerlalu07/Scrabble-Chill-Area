@@ -347,3 +347,29 @@
             }
 
         }
+
+        .cursor {
+            display: inline-block;
+            width: 3px;
+            height: 1em;
+            margin-left: 6px;
+            background: #2AC46C;
+            animation: blink .8s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+
+            0%,
+            50% {
+                opacity: 1;
+            }
+
+            51%,
+            100% {
+                opacity: 0;
+            }
+
+        }
+
+        

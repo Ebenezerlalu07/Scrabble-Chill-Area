@@ -22,8 +22,6 @@
 
 <body class="grid-bg">
 
-
-
     <div class="bg-light"></div>
     <div class="bg-light2"></div>
 
@@ -162,7 +160,7 @@
             <!-- LEFT -->
             <div class="order-2 lg:order-1 text-center lg:text-left">
 
-                <span class="glass inline-flex items-center px-5 py-2 rounded-full text-[#2AC46C] text-sm md:text-base">
+                <span class="glass inline-flex items-center px-6 py-2 rounded-full text-[#2AC46C] text-sm md:text-base">
 
                     🔥 Multiplayer Word Battle
 
@@ -175,10 +173,65 @@
                     </span>
 
                     <span class="block text-white">
-                        SCORE WIN.
+                        <span id="typing"></span><span class="cursor"></span>
                     </span>
 
                 </h1>
+
+                <script>
+
+                    const words = [
+                        "SCORE WIN",
+                        "PLAY SMART",
+                        "BE CHAMP",
+                        "Think again"
+                    ];
+
+                    let wordIndex = 0;
+                    let charIndex = 0;
+                    let deleting = false;
+
+                    const typing = document.getElementById("typing");
+
+                    function typeEffect() {
+
+                        const current = words[wordIndex];
+
+                        if (!deleting) {
+
+                            typing.textContent = current.substring(0, charIndex++);
+
+                            if (charIndex > current.length) {
+
+                                deleting = true;
+
+                                setTimeout(typeEffect, 1500);
+
+                                return;
+
+                            }
+
+                        } else {
+
+                            typing.textContent = current.substring(0, charIndex--);
+
+                            if (charIndex < 0) {
+
+                                deleting = false;
+
+                                wordIndex = (wordIndex + 1) % words.length;
+
+                            }
+
+                        }
+
+                        setTimeout(typeEffect, deleting ? 60 : 120);
+
+                    }
+
+                    typeEffect();
+
+                </script>
 
                 <p class="mt-6 text-gray-300 leading-8 max-w-xl mx-auto lg:mx-0 text-base md:text-lg">
 
@@ -623,34 +676,27 @@
 
             <!-- Heading -->
 
-            <h2 class="mt-10 text-center text-5xl md:text-7xl font-bold leading-tight">
+            <h2 class="mt-10 text-center font-bold leading-tight text-4xl sm:text-5xl md:text-7xl">
 
-                Every
-
-                <span class="text-[#2AC46C]">
-
-                    Letter.
-
+                <span class="block whitespace-nowrap">
+                    Every
+                    <span class="text-[#2AC46C]">
+                        Letter.
+                    </span>
                 </span>
 
-                <br>
-
-                Every
-
-                <span class="text-[#2AC46C]">
-
-                    Score.
-
+                <span class="block whitespace-nowrap">
+                    Every
+                    <span class="text-[#2AC46C]">
+                        Score.
+                    </span>
                 </span>
 
-                <br>
-
-                Every
-
-                <span class="text-[#2AC46C]">
-
-                    Victory.
-
+                <span class="block whitespace-nowrap">
+                    Every
+                    <span class="text-[#2AC46C]">
+                        Victory.
+                    </span>
                 </span>
 
             </h2>
