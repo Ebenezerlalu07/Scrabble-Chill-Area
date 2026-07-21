@@ -153,7 +153,7 @@
 
     <!-- HERO -->
 
-    <section class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-12 lg:py-24">
+    <section class="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-12">
 
         <div class="grid lg:grid-cols-2  lg:gap-20 items-center">
 
@@ -243,11 +243,20 @@
 
                 <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
 
-                    <button class="btn px-8 py-4 rounded-2xl text-base md:text-lg w-full sm:w-auto">
+                    <a href="/play.html">
+                        <button type="button"
+                            class="group relative overflow-hidden rounded-2xl bg-[#2AC46C] px-8 py-4 text-base md:text-lg font-semibold text-[#070B14] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(42,196,108,0.45)] active:scale-95 w-full sm:w-auto">
 
-                        Play Now
+                            <span class="relative z-10 flex items-center justify-center gap-3">
+                                <i class="fa-solid fa-play"></i>
+                                Play Now
+                            </span>
 
-                    </button>
+                            <span
+                                class="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-700 group-hover:translate-x-full"></span>
+
+                        </button>
+                    </a>
 
                     <button class="glass px-8 py-4 rounded-2xl w-full sm:w-auto">
 
@@ -451,199 +460,6 @@
 
     </section><br>
 
-
-    <!-- ================= GAME MODES ================= -->
-
-    <section class="max-w-7xl mx-auto px-6 py-20">
-
-        <div class="text-center mb-16">
-
-            <span class="text-purple-400 uppercase tracking-[6px]">
-                Game Modes
-            </span>
-
-            <h2 class="text-5xl font-bold mt-4">
-                Choose Your Challenge
-            </h2>
-
-            <p class="text-gray-400 mt-5 max-w-2xl mx-auto">
-                Play casual matches, speed battles or create custom tournaments with your friends.
-            </p>
-
-        </div>
-
-        <div class="grid lg:grid-cols-3 gap-8">
-
-            <!-- Card -->
-
-            <div class="glass rounded-3xl p-8 hover:scale-105 duration-300">
-
-                <div class="text-6xl">🎲</div>
-
-                <h3 class="text-3xl font-bold mt-6">
-                    Classic
-                </h3>
-
-                <p class="text-gray-400 mt-4 leading-8">
-                    Traditional Scrabble experience with no rush.
-                    Perfect for family and friends.
-                </p>
-
-                <ul class="space-y-3 mt-8 text-gray-300">
-
-                    <li>✔ 2–4 Players</li>
-                    <li>✔ Unlimited Time</li>
-                    <li>✔ Standard Rules</li>
-
-                </ul>
-
-                <button class="btn w-full py-4 rounded-xl mt-10">
-                    Play Classic
-                </button>
-
-            </div>
-
-            <!-- Card -->
-
-            <div class="glass rounded-3xl p-8 border border-purple-600">
-
-                <div class="text-6xl">⚡</div>
-
-                <h3 class="text-3xl font-bold mt-6">
-                    Blitz Mode
-                </h3>
-
-                <p class="text-gray-400 mt-4 leading-8">
-                    Fast-paced word battles.
-                    60 seconds each turn.
-                    Highest score wins.
-                </p>
-
-                <ul class="space-y-3 mt-8 text-gray-300">
-
-                    <li>✔ 60 Second Timer</li>
-                    <li>✔ Bonus Multipliers</li>
-                    <li>✔ Competitive Ranking</li>
-
-                </ul>
-
-                <button class="btn w-full py-4 rounded-xl mt-10">
-                    Play Blitz
-                </button>
-
-            </div>
-
-            <!-- Card -->
-
-            <div class="glass rounded-3xl p-8 hover:scale-105 duration-300">
-
-                <div class="text-6xl">🏆</div>
-
-                <h3 class="text-3xl font-bold mt-6">
-                    Tournament
-                </h3>
-
-                <p class="text-gray-400 mt-4 leading-8">
-                    Host your own tournament and compete for the championship.
-                </p>
-
-                <ul class="space-y-3 mt-8 text-gray-300">
-
-                    <li>✔ Custom Rules</li>
-                    <li>✔ Live Scoreboard</li>
-                    <li>✔ Unlimited Players</li>
-
-                </ul>
-
-                <button class="btn w-full py-4 rounded-xl mt-10">
-                    Create Tournament
-                </button>
-
-            </div>
-
-        </div>
-
-    </section>
-
-    <!-- ================= FEATURES ================= -->
-
-    <section class="max-w-7xl mx-auto px-6 py-10">
-
-        <div class="text-center mb-16">
-
-            <span class="text-purple-400 uppercase tracking-[5px]">
-                Features
-            </span>
-
-            <h2 class="text-5xl font-bold mt-5">
-                Everything You Need
-            </h2>
-
-        </div>
-
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-
-            <div class="glass p-8 rounded-3xl">
-
-                <div class="text-5xl">🎯</div>
-
-                <h3 class="text-2xl mt-6 font-bold">
-                    Live Score
-                </h3>
-
-                <p class="text-gray-400 mt-4">
-                    Automatic score calculation after every move.
-                </p>
-
-            </div>
-
-            <div class="glass p-8 rounded-3xl">
-
-                <div class="text-5xl">⏱</div>
-
-                <h3 class="text-2xl mt-6 font-bold">
-                    Smart Timer
-                </h3>
-
-                <p class="text-gray-400 mt-4">
-                    Built-in turn timer with sound alerts.
-                </p>
-
-            </div>
-
-            <div class="glass p-8 rounded-3xl">
-
-                <div class="text-5xl">👥</div>
-
-                <h3 class="text-2xl mt-6 font-bold">
-                    Multiplayer
-                </h3>
-
-                <p class="text-gray-400 mt-4">
-                    Invite friends and play together anywhere.
-                </p>
-
-            </div>
-
-            <div class="glass p-8 rounded-3xl">
-
-                <div class="text-5xl">📊</div>
-
-                <h3 class="text-2xl mt-6 font-bold">
-                    Statistics
-                </h3>
-
-                <p class="text-gray-400 mt-4">
-                    Track wins, words played and highest scores.
-                </p>
-
-            </div>
-
-        </div>
-
-    </section><br>
-
-    <!-- ================= LEADERBOARD ================= -->
 
 
     <!-- ================= FOOTER ================= -->

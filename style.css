@@ -372,4 +372,222 @@
 
         }
 
-        
+        /* ===========================
+   GLOBAL
+=========================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+
+            font-family: 'Poppins', sans-serif;
+
+            background:
+                radial-gradient(circle at top, #111827 0%, #070B14 55%, #04060B 100%);
+
+            color: #fff;
+
+        }
+
+        /* ===========================
+   SCROLLBAR
+=========================== */
+
+        ::-webkit-scrollbar {
+
+            width: 10px;
+            height: 10px;
+
+        }
+
+        ::-webkit-scrollbar-thumb {
+
+            background: #5B5BF8;
+            border-radius: 20px;
+
+        }
+
+        ::-webkit-scrollbar-track {
+
+            background: #0C1020;
+
+        }
+
+        /* ===========================
+   GLASS CARD
+=========================== */
+
+        .glass {
+
+            background: rgba(255, 255, 255, .04);
+
+            backdrop-filter: blur(22px);
+
+            border: 1px solid rgba(255, 255, 255, .08);
+
+            box-shadow:
+
+                0 10px 40px rgba(0, 0, 0, .30),
+
+                inset 0 1px rgba(255, 255, 255, .08);
+
+        }
+
+        /* ===========================
+   TIMER
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    font-family:'Poppins',sans-serif;
+
+    background:#070B14;
+
+    color:white;
+
+    overflow:hidden;
+
+}
+
+/* Layout */
+
+        .app {
+
+            display: flex;
+
+            height: 100vh;
+
+        }
+
+        /* Sidebar */
+
+        #sidebar {
+
+            width: 280px;
+
+            background: rgba(255, 255, 255, .05);
+
+            backdrop-filter: blur(20px);
+
+            border-right: 1px solid rgba(255, 255, 255, .08);
+
+        }
+
+        /* Main */
+
+        #main-content {
+
+            flex: 1;
+
+            overflow: auto;
+
+            padding: 30px;
+
+        }
+
+        /* Glass */
+
+        .glass {
+
+            background: rgba(255, 255, 255, .06);
+
+            border: 1px solid rgba(255, 255, 255, .08);
+
+            backdrop-filter: blur(20px);
+
+            border-radius: 24px;
+
+        }
+
+        /* Scroll */
+
+        ::-webkit-scrollbar {
+
+            width: 10px;
+
+        }
+
+        ::-webkit-scrollbar-thumb {
+
+            background: #2AC46C;
+
+            border-radius: 20px;
+
+        }
+
+        ::-webkit-scrollbar-track {
+
+            background: #111;
+
+        }
+
+
+
+        .menu {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 16px;
+
+            padding: 15px 18px;
+
+            border-radius: 18px;
+
+            font-size: 15px;
+
+            font-weight: 500;
+
+            color: #cbd5e1;
+
+            transition: .35s;
+
+            text-decoration: none;
+
+        }
+
+        .menu:hover {
+
+            background: rgba(42, 196, 108, .12);
+
+            color: white;
+
+            transform: translateX(8px);
+
+        }
+
+        .menu.active {
+
+            background: #2AC46C;
+
+            color: #070B14;
+
+            font-weight: 700;
+
+            box-shadow: 0 10px 30px rgba(42, 196, 108, .35);
+
+        }
+
+        .menu i {
+
+            width: 22px;
+
+            text-align: center;
+
+            font-size: 18px;
+
+        }

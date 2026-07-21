@@ -1,0 +1,1646 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+  <title>Scoreboard — Board Game Score Keeper</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Poppins (UI) + Space Mono (scoreboard digits — ledger/tally character) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet">
+
+  <script>
+    // Tailwind config: theme colors from brief
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            bg: '#070B14',
+            primary: '#2AC46C',
+            accent: '#F1D5A4',
+          },
+          fontFamily: {
+            sans: ['Poppins', 'sans-serif'],
+            mono: ['Space Mono', 'monospace'],
+          },
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* ============================================================
+     CSS — Base / Theme / Glassmorphism / Animations
+     ============================================================ */
+    :root {
+      --bg: #070B14;
+      --primary: #2AC46C;
+      --accent: #F1D5A4;
+      --gold: #FFD873;
+      --silver: #CBD5E1;
+      --bronze: #D8965A;
+      /* Player marker palette — assigned round-robin per player index */
+      --p1: #2AC46C;
+      --p2: #F1D5A4;
+      --p3: #6EC6FF;
+      --p4: #FF8A65;
+      --p5: #B39DFF;
+      --p6: #4FD1C5;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      background: var(--bg);
+      font-family: 'Poppins', sans-serif;
+      color: #EAF2ED;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      min-height: 100vh;
+      position: relative;
+      background:
+        radial-gradient(circle at 12% 8%, rgba(42, 196, 108, 0.17), transparent 42%),
+        radial-gradient(circle at 88% 6%, rgba(241, 213, 164, 0.09), transparent 40%),
+        radial-gradient(circle at 85% 95%, rgba(42, 196, 108, 0.10), transparent 45%),
+        var(--bg);
+      background-attachment: fixed;
+    }
+
+    /* Felt-table texture: a faint dot lattice, like a card-table surface,
+     sitting under every screen for tactile, "board game" depth. */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      background-size: 26px 26px;
+      opacity: .35;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    #homeScreen,
+    #newGameScreen,
+    #gameScreen {
+      position: relative;
+      z-index: 1;
+    }
+
+    .font-display {
+      font-family: 'Poppins', sans-serif;
+      letter-spacing: -0.02em;
+    }
+
+    .font-tally {
+      font-family: 'Space Mono', monospace;
+    }
+
+    /* Glass card */
+    .glass {
+      background: rgba(255, 255, 255, 0.045);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+    }
+
+    .glass-strong {
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      position: relative;
+    }
+
+    /* Hairline gold corner accents — a scorecard-clipboard cue */
+    .glass-strong.corners::before,
+    .glass-strong.corners::after {
+      content: '';
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      border-color: rgba(241, 213, 164, 0.55);
+      border-style: solid;
+      border-width: 0;
+      pointer-events: none;
+    }
+
+    .glass-strong.corners::before {
+      top: 10px;
+      left: 10px;
+      border-top-width: 2px;
+      border-left-width: 2px;
+      border-top-left-radius: 8px;
+    }
+
+    .glass-strong.corners::after {
+      bottom: 10px;
+      right: 10px;
+      border-bottom-width: 2px;
+      border-right-width: 2px;
+      border-bottom-right-radius: 8px;
+    }
+
+    /* Small colored marker dot for a given player index (set via inline style --pc) */
+    .player-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--pc, var(--primary));
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.05);
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    .player-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.05);
+      box-shadow: 0 0 0 2px var(--pc, var(--primary)) inset, 0 3px 10px rgba(0, 0, 0, 0.3);
+      transition: transform .15s ease, background .2s ease;
+    }
+
+    .player-avatar:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-1px) scale(1.05);
+    }
+
+    .player-avatar:active {
+      transform: scale(0.92);
+    }
+
+    /* Small read-only avatar badge used in header / table / rankings */
+    .avatar-badge {
+      width: 26px;
+      height: 26px;
+      border-radius: 9px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+      background: rgba(255, 255, 255, 0.05);
+      box-shadow: 0 0 0 2px var(--pc, var(--primary)) inset;
+    }
+
+    .avatar-badge-sm {
+      width: 20px;
+      height: 20px;
+      border-radius: 7px;
+      font-size: 11px;
+      box-shadow: 0 0 0 1.5px var(--pc, var(--primary)) inset;
+    }
+
+    .avatar-badge-lg {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      font-size: 20px;
+      box-shadow: 0 0 0 2px var(--pc, var(--primary)) inset, 0 3px 12px rgba(0, 0, 0, 0.35);
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      height: 10px;
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(42, 196, 108, 0.4);
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(42, 196, 108, 0.65);
+    }
+
+    /* Buttons */
+    .btn {
+      transition: transform .15s ease, box-shadow .15s ease, background .2s ease, opacity .2s ease;
+      will-change: transform;
+    }
+
+    .btn:active {
+      transform: scale(0.96);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #2AC46C, #1f9e57);
+      box-shadow: 0 4px 18px rgba(42, 196, 108, 0.35);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 8px 26px rgba(42, 196, 108, 0.55);
+    }
+
+    .btn-accent {
+      background: linear-gradient(135deg, #F1D5A4, #d9b87f);
+      color: #14210E;
+      box-shadow: 0 4px 18px rgba(241, 213, 164, 0.25);
+    }
+
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.11);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #e15b5b, #b83a3a);
+      box-shadow: 0 4px 18px rgba(225, 91, 91, 0.3);
+    }
+
+    .btn:disabled {
+      opacity: .4;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* Poker-chip button — the single decisive action (TOTAL / NET SCORE).
+     Notched edge via repeating-conic-gradient evokes a chip's rim. */
+    .chip-btn {
+      position: relative;
+      border-radius: 9999px;
+      padding: 3px;
+      background: repeating-conic-gradient(#7a6440 0deg 9deg, var(--accent) 9deg 18deg);
+      box-shadow: 0 6px 22px rgba(241, 213, 164, 0.28), 0 2px 6px rgba(0, 0, 0, 0.4);
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+
+    .chip-btn:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 10px 30px rgba(241, 213, 164, 0.4);
+    }
+
+    .chip-btn:active {
+      transform: scale(0.96);
+    }
+
+    .chip-btn-inner {
+      background: radial-gradient(circle at 35% 30%, #fff7e8, #F1D5A4 55%, #d9b87f 100%);
+      color: #1a1408;
+      border-radius: 9999px;
+      padding: 0.85rem 1.9rem;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      font-size: 0.85rem;
+    }
+
+    /* Circular turn timer — conic-gradient ring filling as seconds pass.
+     JS sets --pct (0–100) on #timerRing inline. */
+    #timerRing {
+      --pct: 0;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: conic-gradient(var(--primary) calc(var(--pct)*1%), rgba(255, 255, 255, 0.09) 0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .25s linear;
+      flex-shrink: 0;
+    }
+
+    #timerRing.ring-alarm {
+      background: conic-gradient(#e15b5b calc(var(--pct)*1%), rgba(225, 91, 91, 0.18) 0);
+    }
+
+    #timerRing .ring-face {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: #0b1120;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+    }
+
+    /* Fade-in for cards / rows */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-up {
+      animation: fadeUp .45s ease both;
+    }
+
+    @keyframes rowFade {
+      from {
+        opacity: 0;
+        background-color: rgba(42, 196, 108, 0.25);
+      }
+
+      to {
+        opacity: 1;
+        background-color: transparent;
+      }
+    }
+
+    .row-fade {
+      animation: rowFade .8s ease both;
+    }
+
+    /* Number highlight pulse on change */
+    @keyframes numPulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(42, 196, 108, 0.6);
+        background-color: rgba(42, 196, 108, 0.35);
+      }
+
+      100% {
+        box-shadow: 0 0 0 8px rgba(42, 196, 108, 0);
+        background-color: transparent;
+      }
+    }
+
+    .num-pulse {
+      animation: numPulse .7s ease-out;
+    }
+
+    /* Leader glow */
+    @keyframes leaderGlow {
+
+      0%,
+      100% {
+        text-shadow: 0 0 6px rgba(241, 213, 164, 0.4);
+      }
+
+      50% {
+        text-shadow: 0 0 16px rgba(241, 213, 164, 0.95);
+      }
+    }
+
+    .leader-glow {
+      animation: leaderGlow 2.2s ease-in-out infinite;
+      color: var(--accent);
+    }
+
+    /* Winner celebration */
+    @keyframes winnerPop {
+      0% {
+        transform: scale(0.6);
+        opacity: 0;
+      }
+
+      60% {
+        transform: scale(1.08);
+        opacity: 1;
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .winner-pop {
+      animation: winnerPop .6s cubic-bezier(.2, 1.4, .4, 1) both;
+    }
+
+    @keyframes softPulseGold {
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 0 rgba(255, 216, 115, 0.55);
+      }
+
+      50% {
+        box-shadow: 0 0 0 10px rgba(255, 216, 115, 0);
+      }
+    }
+
+    .gold-ring {
+      box-shadow: 0 0 0 2px var(--gold) inset;
+      animation: softPulseGold 2s ease-in-out infinite;
+    }
+
+    .silver-ring {
+      box-shadow: 0 0 0 2px var(--silver) inset;
+    }
+
+    .bronze-ring {
+      box-shadow: 0 0 0 2px var(--bronze) inset;
+    }
+
+    /* Timer ring pulse when running */
+    @keyframes timerPulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: .55;
+      }
+    }
+
+    .timer-live {
+      animation: timerPulse 1s ease-in-out infinite;
+    }
+
+    @keyframes alarmFlash {
+
+      0%,
+      100% {
+        background-color: rgba(225, 91, 91, 0.25);
+      }
+
+      50% {
+        background-color: rgba(225, 91, 91, 0.65);
+      }
+    }
+
+    .alarm-flash {
+      animation: alarmFlash .5s ease-in-out infinite;
+    }
+
+    /* Plain text field (game name, player names) — keeps Poppins, unlike scores */
+    .text-input {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #EAF2ED;
+      font-family: 'Poppins', sans-serif;
+      transition: border-color .2s ease, background .2s ease, box-shadow .2s ease;
+    }
+
+    .text-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: rgba(42, 196, 108, 0.1);
+      box-shadow: 0 0 0 3px rgba(42, 196, 108, 0.15);
+    }
+
+    /* Score input — Space Mono gives every number a tally-sheet feel */
+    .score-input {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #EAF2ED;
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      transition: border-color .2s ease, background .2s ease, box-shadow .2s ease;
+    }
+
+    .score-input:focus {
+      outline: none;
+      border-color: var(--pc, var(--primary));
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--pc, var(--primary)) 30%, transparent);
+    }
+
+    .score-input::-webkit-outer-spin-button,
+    .score-input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .score-input[type=number] {
+      -moz-appearance: textfield;
+    }
+
+    /* Sticky table bits */
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .sticky-col {
+      position: sticky;
+      left: 0;
+      z-index: 10;
+    }
+
+    .rank-up {
+      color: var(--primary);
+    }
+
+    .rank-down {
+      color: #e15b5b;
+    }
+
+    .rank-same {
+      color: #94a3b8;
+    }
+
+    /* Player column header: colored top rule + dot marker set via --pc */
+    th[data-player-col] {
+      border-top: 3px solid var(--pc, var(--primary));
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent);
+    }
+
+    /* Round label chip in the sticky column */
+    .round-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 30px;
+      height: 22px;
+      padding: 0 8px;
+      border-radius: 999px;
+      background: rgba(42, 196, 108, 0.16);
+      color: var(--primary);
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      margin-right: 6px;
+    }
+
+    tbody tr:nth-of-type(4n+1),
+    tbody tr:nth-of-type(4n+2) {
+      background: rgba(255, 255, 255, 0.012);
+    }
+
+    /* confetti */
+    .confetti-piece {
+      position: fixed;
+      top: -10px;
+      width: 8px;
+      height: 14px;
+      opacity: 0.95;
+      z-index: 9999;
+      pointer-events: none;
+      border-radius: 2px;
+    }
+
+    @keyframes confettiFall {
+      to {
+        transform: translateY(110vh) rotate(540deg);
+        opacity: 0;
+      }
+    }
+
+    /* generic fade for screen switches */
+    .screen {
+      animation: fadeUp .35s ease both;
+    }
+
+    input[type="text"]::placeholder {
+      color: rgba(234, 242, 237, 0.35);
+    }
+
+    /* toast */
+    #toast {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      transform: translateX(-50%) translateY(20px);
+      opacity: 0;
+      transition: all .3s ease;
+      z-index: 9999;
+      pointer-events: none;
+    }
+
+    #toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+
+<body class="min-h-screen antialiased">
+
+  <!-- ============================================================
+     HOME SCREEN
+     ============================================================ -->
+  <section id="homeScreen" class="screen min-h-screen flex flex-col items-center justify-center px-5 py-10">
+
+    <!-- Decorative dice-pip cluster, purely ambient -->
+    <div class="flex items-center gap-2 mb-6 fade-up opacity-90" aria-hidden="true">
+      <span class="w-9 h-9 rounded-lg glass flex items-center justify-center text-primary text-lg -rotate-6">⚄</span>
+      <span class="w-11 h-11 rounded-xl btn-primary flex items-center justify-center text-2xl shadow-lg">⚃</span>
+      <span class="w-9 h-9 rounded-lg glass flex items-center justify-center text-accent text-lg rotate-6">⚀</span>
+    </div>
+
+    <div class="glass-strong corners rounded-3xl p-8 w-full max-w-md text-center fade-up">
+      <h1 class="font-display text-3xl font-extrabold tracking-tight mb-1">Scoreboard</h1>
+      <p class="text-sm text-white/50 mb-2">Every round, every total — kept to the tile.</p>
+      <div class="w-10 h-[3px] mx-auto rounded-full bg-gradient-to-r from-primary to-accent mb-7"></div>
+
+      <button id="btnNewGame"
+        class="btn btn-primary w-full py-3.5 rounded-xl font-semibold text-white mb-3 flex items-center justify-center gap-2">
+        <span class="text-lg leading-none">＋</span> New Game
+      </button>
+      <button id="btnContinueGame"
+        class="btn btn-ghost w-full py-3.5 rounded-xl font-semibold hidden flex items-center justify-center gap-2">
+        ↻ Continue Game
+      </button>
+
+      <div class="flex items-center justify-center gap-2 mt-7">
+        <span
+          class="text-[11px] font-tally uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-white/50">2–6
+          players</span>
+        <span
+          class="text-[11px] font-tally uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-white/50">Unlimited
+          rounds</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+     NEW GAME SCREEN
+     ============================================================ -->
+  <section id="newGameScreen" class="screen hidden min-h-screen px-5 py-10">
+    <div class="max-w-md mx-auto">
+      <button id="btnBackHome" class="text-white/50 hover:text-white text-sm mb-6 flex items-center gap-1">←
+        Back</button>
+
+      <div class="glass-strong corners rounded-3xl p-6 fade-up">
+        <h2 class="font-display text-xl font-bold mb-1">New Game</h2>
+        <p class="text-xs text-white/40 mb-6">Set the table, then deal everyone in.</p>
+
+        <label class="block text-xs uppercase tracking-wide text-white/40 mb-2">Game Name</label>
+        <input id="inputGameName" type="text" placeholder="e.g. Friday Night Rummy"
+          class="text-input w-full rounded-xl px-4 py-3 mb-6 text-base" maxlength="40" />
+
+        <label class="block text-xs uppercase tracking-wide text-white/40 mb-2">Players (2–6)</label>
+        <div id="playerInputs" class="space-y-3 mb-2"></div>
+
+        <button id="btnAddPlayerSlot" class="text-primary text-sm font-medium mt-2 mb-6 hover:underline">+ Add another
+          player</button>
+
+        <p id="newGameError" class="text-red-400 text-sm mb-4 hidden"></p>
+
+        <button id="btnStartGame" class="btn btn-primary w-full py-3.5 rounded-xl font-semibold text-white">
+          Start Game
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+     GAME SCREEN
+     ============================================================ -->
+  <section id="gameScreen" class="screen hidden min-h-screen pb-28">
+
+    <!-- Header -->
+    <header class="glass sticky top-0 z-30 px-4 py-3 sm:px-6 sm:py-4 border-b border-white/5">
+      <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-3 min-w-0">
+          <div class="w-10 h-10 rounded-xl btn-primary flex items-center justify-center text-lg shrink-0">🎯</div>
+          <div class="min-w-0">
+            <h1 id="headerGameName" class="font-display font-bold text-base truncate max-w-[38vw] sm:max-w-xs">Game Name
+            </h1>
+            <p class="text-xs text-white/40 font-tally">Round <span id="headerRound"
+                class="text-primary font-bold">1</span></p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-4 sm:gap-6 text-sm">
+          <div class="text-right">
+            <p class="text-[10px] uppercase tracking-wide text-white/40">👑 Leader</p>
+            <p id="headerLeader" class="font-semibold leader-glow flex items-center justify-end gap-1.5">
+              <span id="leaderAvatar" class="avatar-badge-sm avatar-badge hidden"></span><span
+                id="headerLeaderText">—</span>
+            </p>
+          </div>
+          <div class="text-right hidden sm:block">
+            <p class="text-[10px] uppercase tracking-wide text-white/40">On the clock</p>
+            <p id="headerCurrentPlayer" class="font-semibold text-accent flex items-center justify-end gap-1.5">
+              <span id="currentPlayerAvatar" class="avatar-badge-sm avatar-badge hidden"></span><span
+                id="currentPlayerText">—</span>
+            </p>
+          </div>
+
+          <!-- Turn Timer: circular ring, fills clockwise toward 01:00 -->
+          <div id="timerRing" title="Turn timer">
+            <div class="ring-face">
+              <span id="timerDisplay" class="font-tally font-bold text-xs leading-none">00:00</span>
+            </div>
+          </div>
+
+          <button id="btnSettings" class="btn btn-ghost w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+            title="Settings">⚙️</button>
+        </div>
+      </div>
+
+      <div class="max-w-6xl mx-auto mt-2 flex items-center gap-2">
+        <button id="btnResetTimer" class="btn btn-ghost text-xs px-3 py-1.5 rounded-lg">↺ Reset Timer</button>
+        <p id="alarmNote" class="text-xs text-red-400 hidden">⏰ Time's up — press Reset Timer</p>
+      </div>
+    </header>
+
+    <!-- Score Table -->
+    <main class="max-w-6xl mx-auto px-3 sm:px-6 mt-5">
+      <div class="glass rounded-2xl overflow-hidden">
+        <div id="tableScroll" class="overflow-x-auto">
+          <table class="w-full text-sm border-collapse min-w-max">
+            <thead>
+              <tr id="tableHeadRow" class="bg-[#0c1220] text-white/60 text-xs uppercase tracking-wide">
+                <th class="sticky-col bg-[#0c1220] px-3 py-3 text-left w-24">Round</th>
+                <!-- player headers injected -->
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+              <!-- rows injected by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <p id="validationError" class="text-red-400 text-sm mt-3 hidden text-center"></p>
+    </main>
+
+    <!-- Bottom toolbar -->
+    <div class="fixed bottom-0 left-0 right-0 z-30">
+      <div class="glass-strong border-t border-white/10 px-3 py-3">
+        <div class="max-w-6xl mx-auto flex flex-wrap gap-2 justify-center">
+          <button id="btnAddRound" class="btn btn-ghost px-4 py-2.5 rounded-xl text-sm font-medium">+ Add Round</button>
+          <button id="btnAddPlayer" class="btn btn-ghost px-4 py-2.5 rounded-xl text-sm font-medium">+ Add
+            Player</button>
+          <button id="btnSave" class="btn btn-ghost px-4 py-2.5 rounded-xl text-sm font-medium">💾 Save</button>
+          <button id="btnResetGame" class="btn btn-danger px-4 py-2.5 rounded-xl text-sm font-medium text-white">Reset
+            Game</button>
+          <button id="btnTotal" class="chip-btn"><span class="chip-btn-inner">TOTAL</span></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Settings Modal -->
+  <div id="settingsModal" class="hidden fixed inset-0 z-50 flex items-center justify-center px-5 bg-black/60">
+    <div class="glass-strong rounded-2xl p-6 w-full max-w-sm fade-up">
+      <h3 class="font-bold text-lg mb-4">Settings</h3>
+      <div class="flex items-center justify-between mb-4">
+        <span class="text-sm text-white/70">Alarm sound</span>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" id="toggleAlarm" class="sr-only peer" checked>
+          <div
+            class="w-11 h-6 bg-white/15 peer-checked:bg-primary rounded-full transition-all relative
+          after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-5">
+          </div>
+        </label>
+      </div>
+      <div class="flex items-center justify-between mb-6">
+        <span class="text-sm text-white/70">Sort: lower score wins</span>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" id="toggleLowerWins" class="sr-only peer" checked>
+          <div
+            class="w-11 h-6 bg-white/15 peer-checked:bg-primary rounded-full transition-all relative
+          after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-5">
+          </div>
+        </label>
+      </div>
+      <button id="btnCloseSettings"
+        class="btn btn-primary w-full py-2.5 rounded-xl font-semibold text-white">Done</button>
+    </div>
+  </div>
+
+  <!-- Confirm Modal (generic) -->
+  <div id="confirmModal" class="hidden fixed inset-0 z-50 flex items-center justify-center px-5 bg-black/60">
+    <div class="glass-strong rounded-2xl p-6 w-full max-w-sm fade-up text-center">
+      <p id="confirmMessage" class="text-white/90 mb-6">Are you sure?</p>
+      <div class="flex gap-3">
+        <button id="confirmCancel" class="btn btn-ghost flex-1 py-2.5 rounded-xl font-medium">Cancel</button>
+        <button id="confirmOk" class="btn btn-danger flex-1 py-2.5 rounded-xl font-medium text-white">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="glass-strong rounded-xl px-5 py-3 text-sm font-medium"></div>
+
+  <script>
+    /* =====================================================================
+       BOARD GAME SCORE KEEPER — application logic (vanilla JS)
+       Single source of truth: `state` object, persisted to localStorage.
+       ===================================================================== */
+
+    const STORAGE_KEY = 'boardGameScoreKeeper_v1';
+    const MAX_PLAYERS = 6;
+    const MIN_PLAYERS = 2;
+    const TIMER_MAX = 60; // seconds
+
+    // Round-robin marker color per player index (mirrors CSS vars --p1..--p6)
+    const PLAYER_COLORS = ['#2AC46C', '#F1D5A4', '#6EC6FF', '#FF8A65', '#B39DFF', '#4FD1C5'];
+    const playerColor = (i) => PLAYER_COLORS[i % PLAYER_COLORS.length];
+    const playerInitial = (name) => (name || '?').trim().charAt(0).toUpperCase();
+
+    // Pickable avatar emoji — tap a player's avatar chip during setup to cycle
+    const AVATAR_SET = ['🦊', '🐼', '🦁', '🐨', '🐸', '🐧', '🦉', '🐺', '🐢', '🐙', '🦄', '🐝', '🐯', '🐻', '🦋', '🐬', '🐹', '🐰', '🦔', '🐲'];
+    const avatarFor = (i) => AVATAR_SET[i % AVATAR_SET.length];
+
+    /* ---------------------------------------------------------------------
+       Application state
+       -------------------------------------------------------------------*/
+    let state = null;          // active game state (see createNewState)
+    let timerInterval = null;  // setInterval handle for the turn timer
+    let alarmInterval = null;  // setInterval handle for the beeping alarm
+    let audioCtx = null;       // lazily-created WebAudio context
+    let pendingConfirmAction = null;
+
+    /* ---------------------------------------------------------------------
+       Utility: DOM shortcuts
+       -------------------------------------------------------------------*/
+    const $ = (id) => document.getElementById(id);
+    const qs = (sel, root = document) => root.querySelector(sel);
+    const qsa = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+
+    /* =====================================================================
+       STATE HELPERS
+       ===================================================================== */
+
+    // Build a brand-new game state object from a name + player list
+    function createNewState(gameName, players) {
+      return {
+        gameName: gameName,
+        players: players,                            // array of { name, avatar }
+        rounds: [{ scores: players.map(() => null) }], // start with round 1
+        adjustment: null,                            // array once TOTAL pressed
+        netScore: null,                              // array once NET SCORE pressed
+        rankBeforeAdjustment: null,                  // array of ranks (1 = best)
+        rankAfterNet: null,
+        currentPlayerIndex: null,
+        timer: { seconds: 0, running: false },
+        lowerWins: true,                             // scoring convention
+        alarmOn: true,
+      };
+    }
+
+    // Persist current state to localStorage
+    function saveState(showToast) {
+      if (!state) return;
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        if (showToast) toast('Game saved');
+      } catch (e) {
+        toast('Could not save (storage full?)');
+      }
+    }
+
+    // Load state from localStorage; returns null if none saved
+    function loadState() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return null;
+      try {
+        const parsed = JSON.parse(raw);
+        if (parsed && Array.isArray(parsed.players)) {
+          parsed.players = parsed.players.map((p, i) =>
+            typeof p === 'string' ? { name: p, avatar: avatarFor(i) } : { avatar: avatarFor(i), ...p }
+          );
+        }
+        return parsed;
+      } catch (e) { return null; }
+    }
+
+    function clearState() {
+      localStorage.removeItem(STORAGE_KEY);
+    }
+
+    /* =====================================================================
+       NAVIGATION
+       ===================================================================== */
+
+    function showScreen(id) {
+      ['homeScreen', 'newGameScreen', 'gameScreen'].forEach(s => {
+        $(s).classList.toggle('hidden', s !== id);
+      });
+    }
+
+    function goHome() {
+      stopTimer();
+      stopAlarm();
+      const saved = loadState();
+      $('btnContinueGame').classList.toggle('hidden', !saved);
+      showScreen('homeScreen');
+    }
+
+    /* =====================================================================
+       TOAST
+       ===================================================================== */
+    let toastTimeout = null;
+    function toast(msg) {
+      const el = $('toast');
+      el.textContent = msg;
+      el.classList.add('show');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => el.classList.remove('show'), 2200);
+    }
+
+    /* =====================================================================
+       CONFIRM MODAL (generic reusable confirm dialog)
+       ===================================================================== */
+    function askConfirm(message, onConfirm) {
+      $('confirmMessage').textContent = message;
+      pendingConfirmAction = onConfirm;
+      $('confirmModal').classList.remove('hidden');
+    }
+    $('confirmCancel').addEventListener('click', () => {
+      $('confirmModal').classList.add('hidden');
+      pendingConfirmAction = null;
+    });
+    $('confirmOk').addEventListener('click', () => {
+      $('confirmModal').classList.add('hidden');
+      if (pendingConfirmAction) pendingConfirmAction();
+      pendingConfirmAction = null;
+    });
+
+    /* =====================================================================
+       HOME SCREEN LOGIC
+       ===================================================================== */
+    $('btnNewGame').addEventListener('click', () => {
+      resetNewGameForm();
+      showScreen('newGameScreen');
+    });
+
+    $('btnContinueGame').addEventListener('click', () => {
+      const saved = loadState();
+      if (!saved) { toast('No saved game found'); return; }
+      state = saved;
+      enterGameScreen();
+    });
+
+    /* =====================================================================
+       NEW GAME SCREEN LOGIC
+       ===================================================================== */
+    $('btnBackHome').addEventListener('click', goHome);
+
+    function resetNewGameForm() {
+      $('inputGameName').value = '';
+      $('newGameError').classList.add('hidden');
+      const wrap = $('playerInputs');
+      wrap.innerHTML = '';
+      for (let i = 0; i < MIN_PLAYERS; i++) addPlayerSlot();
+    }
+
+    // Add one more player name input (max 6)
+    function addPlayerSlot() {
+      const wrap = $('playerInputs');
+      const count = wrap.children.length;
+      if (count >= MAX_PLAYERS) return;
+      const idx = count + 1;
+      const row = document.createElement('div');
+      row.className = 'flex items-center gap-2 fade-up';
+      row.dataset.avatarIndex = count; // which AVATAR_SET emoji is currently shown
+      row.innerHTML = `
+    <button type="button" data-avatar-btn title="Tap to change avatar"
+      class="player-avatar" style="--pc:${playerColor(count)}">${avatarFor(count)}</button>
+    <input type="text" data-player-input placeholder="Player Name ${idx}" maxlength="18"
+      class="text-input flex-1 rounded-xl px-4 py-2.5 text-sm" />
+    ${count >= MIN_PLAYERS ? '<button type="button" data-remove-player class="btn-ghost btn w-9 h-9 rounded-xl text-white/60 shrink-0">✕</button>' : ''}
+  `;
+      wrap.appendChild(row);
+
+      // Tapping the avatar cycles to the next emoji in AVATAR_SET
+      row.querySelector('[data-avatar-btn]').addEventListener('click', (e) => {
+        row.dataset.avatarIndex = (parseInt(row.dataset.avatarIndex, 10) + 1) % AVATAR_SET.length;
+        e.currentTarget.textContent = AVATAR_SET[row.dataset.avatarIndex];
+      });
+
+      const removeBtn = row.querySelector('[data-remove-player]');
+      if (removeBtn) {
+        removeBtn.addEventListener('click', () => {
+          row.remove();
+          renumberPlayerPlaceholders();
+          $('btnAddPlayerSlot').classList.remove('hidden');
+        });
+      }
+      if (wrap.children.length >= MAX_PLAYERS) {
+        $('btnAddPlayerSlot').classList.add('hidden');
+      }
+    }
+
+    function renumberPlayerPlaceholders() {
+      qsa('[data-player-input]').forEach((inp, i) => {
+        inp.placeholder = `Player Name ${i + 1}`;
+      });
+      // Only re-tint the color marker on renumber — leave each player's chosen
+      // avatar emoji untouched so removing an earlier row doesn't reshuffle picks.
+      qsa('#playerInputs [data-avatar-btn]').forEach((av, i) => {
+        av.style.setProperty('--pc', playerColor(i));
+      });
+    }
+
+    $('btnAddPlayerSlot').addEventListener('click', addPlayerSlot);
+
+    $('btnStartGame').addEventListener('click', () => {
+      const gameName = $('inputGameName').value.trim() || 'Untitled Game';
+      const rows = qsa('#playerInputs > div');
+      const players = rows
+        .map(row => ({
+          name: row.querySelector('[data-player-input]').value.trim(),
+          avatar: row.querySelector('[data-avatar-btn]').textContent,
+        }))
+        .filter(p => p.name.length > 0);
+
+      const err = $('newGameError');
+      if (players.length < MIN_PLAYERS) {
+        err.textContent = `Please enter at least ${MIN_PLAYERS} player names.`;
+        err.classList.remove('hidden');
+        return;
+      }
+      if (players.length > MAX_PLAYERS) {
+        err.textContent = `Maximum ${MAX_PLAYERS} players allowed.`;
+        err.classList.remove('hidden');
+        return;
+      }
+      err.classList.add('hidden');
+
+      state = createNewState(gameName, players);
+      saveState(false);
+      enterGameScreen();
+    });
+
+    /* =====================================================================
+       GAME SCREEN — ENTRY / RENDER ORCHESTRATION
+       ===================================================================== */
+    function enterGameScreen() {
+      showScreen('gameScreen');
+      renderHeader();
+      renderTableHead();
+      renderTable();
+      renderTimer();
+      updateLeaderAndCurrentPlayer();
+      // Resume timer visually if it was running (we don't auto-resume the
+      // countdown-up across reloads to avoid surprise alarms; user resumes
+      // by entering a score, per spec "timer waits until next score entry").
+    }
+
+    /* ---------------------------------------------------------------------
+       HEADER
+       -------------------------------------------------------------------*/
+    function renderHeader() {
+      $('headerGameName').textContent = state.gameName;
+      $('headerRound').textContent = state.rounds.length;
+    }
+
+    function updateLeaderAndCurrentPlayer() {
+      // Leader = player with best (lowest, if lowerWins) running total so far
+      const totals = computeRunningTotals();
+      const lastTotals = totals[totals.length - 1] || state.players.map(() => 0);
+      let bestIdx = [];
+      let bestVal = null;
+      lastTotals.forEach((v, i) => {
+        if (bestVal === null || (state.lowerWins ? v < bestVal : v > bestVal)) {
+          bestVal = v; bestIdx = [i];
+        } else if (v === bestVal) {
+          bestIdx.push(i);
+        }
+      });
+      const hasAnyScore = state.rounds.some(r => r.scores.some(s => s !== null));
+      const leaderAvatarEl = $('leaderAvatar');
+      if (hasAnyScore && bestIdx.length === 1) {
+        const p = state.players[bestIdx[0]];
+        leaderAvatarEl.textContent = p.avatar;
+        leaderAvatarEl.style.setProperty('--pc', playerColor(bestIdx[0]));
+        leaderAvatarEl.classList.remove('hidden');
+        $('headerLeaderText').textContent = p.name;
+      } else {
+        leaderAvatarEl.classList.add('hidden');
+        $('headerLeaderText').textContent = hasAnyScore
+          ? 'Tied: ' + bestIdx.map(i => state.players[i].name).join(', ')
+          : '—';
+      }
+
+      const curAvatarEl = $('currentPlayerAvatar');
+      if (state.currentPlayerIndex !== null) {
+        const p = state.players[state.currentPlayerIndex];
+        curAvatarEl.textContent = p.avatar;
+        curAvatarEl.style.setProperty('--pc', playerColor(state.currentPlayerIndex));
+        curAvatarEl.classList.remove('hidden');
+        $('currentPlayerText').textContent = p.name;
+      } else {
+        curAvatarEl.classList.add('hidden');
+        $('currentPlayerText').textContent = '—';
+      }
+    }
+
+    /* =====================================================================
+       TABLE RENDERING
+       ===================================================================== */
+
+    // Build/rebuild the header row (Round + one column per player)
+    function renderTableHead() {
+      const headRow = $('tableHeadRow');
+      // remove existing player <th> (keep the first "Round" th)
+      qsa('th[data-player-col]', headRow).forEach(th => th.remove());
+      state.players.forEach((p, i) => {
+        const th = document.createElement('th');
+        th.setAttribute('data-player-col', i);
+        th.className = 'px-3 py-3 text-center min-w-[92px] whitespace-nowrap bg-[#0c1220]';
+        th.style.setProperty('--pc', playerColor(i));
+        th.innerHTML = `
+      <div class="flex flex-col items-center gap-1">
+        <span class="avatar-badge" style="--pc:${playerColor(i)}">${p.avatar}</span>
+        <span>${escapeHtml(p.name)}</span>
+      </div>`;
+        headRow.appendChild(th);
+      });
+    }
+
+    // Minimal HTML-escape for player-supplied text rendered via innerHTML
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    // Compute running totals: returns array (per round) of arrays (per player)
+    function computeRunningTotals() {
+      const totals = [];
+      const running = state.players.map(() => 0);
+      state.rounds.forEach(round => {
+        round.scores.forEach((s, i) => { running[i] += (s || 0); });
+        totals.push(running.slice());
+      });
+      return totals;
+    }
+
+    // Full table render: two rows per round (Scores, Running Total),
+    // plus Adjustment / Net Score rows if present.
+    function renderTable() {
+      const tbody = $('tableBody');
+      tbody.innerHTML = '';
+      const totals = computeRunningTotals();
+
+      state.rounds.forEach((round, rIdx) => {
+        // --- Scores row ---
+        const scoreRow = document.createElement('tr');
+        scoreRow.className = 'row-fade border-t border-white/5 hover:bg-white/[0.03]';
+        const scoreLabelCell = document.createElement('td');
+        scoreLabelCell.className = 'sticky-col bg-[#0a0f1c] px-3 py-2.5 font-semibold text-white/80 whitespace-nowrap';
+        scoreLabelCell.innerHTML = `<span class="round-chip">#${rIdx + 1}</span>Round`;
+        scoreRow.appendChild(scoreLabelCell);
+
+        state.players.forEach((name, pIdx) => {
+          const td = document.createElement('td');
+          td.className = 'px-2 py-2 text-center';
+          const input = document.createElement('input');
+          input.type = 'number';
+          input.inputMode = 'numeric';
+          input.min = '0';
+          input.step = '1';
+          input.placeholder = '—';
+          input.className = 'score-input w-16 sm:w-20 mx-auto rounded-lg px-2 py-2 text-center';
+          input.style.setProperty('--pc', playerColor(pIdx));
+          input.value = round.scores[pIdx] === null ? '' : round.scores[pIdx];
+          input.dataset.round = rIdx;
+          input.dataset.player = pIdx;
+          input.addEventListener('change', onScoreChange);
+          input.addEventListener('input', onScoreLiveGuard);
+          td.appendChild(input);
+          scoreRow.appendChild(td);
+        });
+        tbody.appendChild(scoreRow);
+
+        // --- Running Total row ---
+        const totalRow = document.createElement('tr');
+        totalRow.className = 'border-t border-b border-white/5 bg-primary/[0.05]';
+        const totalLabelCell = document.createElement('td');
+        totalLabelCell.className = 'sticky-col bg-[#0c1220] px-3 py-2 text-[11px] uppercase tracking-wide text-primary font-semibold';
+        totalLabelCell.textContent = '↳ Running Total';
+        totalRow.appendChild(totalLabelCell);
+
+        state.players.forEach((name, pIdx) => {
+          const td = document.createElement('td');
+          td.className = 'px-2 py-2 text-center font-bold text-accent font-tally';
+          td.textContent = totals[rIdx][pIdx];
+          td.dataset.totalCell = `${rIdx}-${pIdx}`;
+          totalRow.appendChild(td);
+        });
+        tbody.appendChild(totalRow);
+      });
+
+      // --- Adjustment row (if TOTAL has been pressed) ---
+      if (state.adjustment) {
+        tbody.appendChild(buildAdjustmentRow());
+      }
+      // --- Net Score row (if NET SCORE has been pressed) ---
+      if (state.netScore) {
+        tbody.appendChild(buildNetScoreRow());
+      }
+    }
+
+    // Guard: strip non-digit characters as user types (integers only, no negatives)
+    function onScoreLiveGuard(e) {
+      let v = e.target.value;
+      v = v.replace(/[^0-9]/g, '');
+      if (v !== e.target.value) e.target.value = v;
+    }
+
+    // Handle a score cell being committed (blur / enter)
+    function onScoreChange(e) {
+      const rIdx = parseInt(e.target.dataset.round, 10);
+      const pIdx = parseInt(e.target.dataset.player, 10);
+      let raw = e.target.value.trim();
+
+      if (raw === '') {
+        state.rounds[rIdx].scores[pIdx] = null;
+        saveState(false);
+        renderTable();
+        return;
+      }
+
+      let val = parseInt(raw, 10);
+      if (isNaN(val) || val < 0) {
+        toast('Only non-negative whole numbers are allowed');
+        e.target.value = state.rounds[rIdx].scores[pIdx] === null ? '' : state.rounds[rIdx].scores[pIdx];
+        return;
+      }
+
+      state.rounds[rIdx].scores[pIdx] = val;
+      state.currentPlayerIndex = pIdx;
+
+      // Per spec: entering a score resets timer to 0 and (re)starts it.
+      resetTimer();
+      startTimer();
+
+      saveState(false);
+      renderTable();
+      updateLeaderAndCurrentPlayer();
+
+      // Pulse the just-updated running total cell
+      requestAnimationFrame(() => {
+        const cell = qs(`[data-total-cell="${rIdx}-${pIdx}"]`);
+        if (cell) { cell.classList.add('num-pulse'); setTimeout(() => cell.classList.remove('num-pulse'), 700); }
+      });
+    }
+
+    /* =====================================================================
+       ADD ROUND / ADD PLAYER
+       ===================================================================== */
+    $('btnAddRound').addEventListener('click', () => {
+      if (state.adjustment) { toast('Cannot add rounds after totaling'); return; }
+      state.rounds.push({ scores: state.players.map(() => null) });
+      renderHeader();
+      renderTable();
+      saveState(false);
+      toast(`Round ${state.rounds.length} added`);
+    });
+
+    $('btnAddPlayer').addEventListener('click', () => {
+      if (state.adjustment) { toast('Cannot add players after totaling'); return; }
+      if (state.players.length >= MAX_PLAYERS) { toast('Maximum 6 players reached'); return; }
+      const name = prompt('Enter new player name:');
+      if (!name || !name.trim()) return;
+      state.players.push({ name: name.trim(), avatar: avatarFor(state.players.length) });
+      state.rounds.forEach(r => r.scores.push(null));
+      renderTableHead();
+      renderTable();
+      updateLeaderAndCurrentPlayer();
+      saveState(false);
+      toast(`${name.trim()} joined the game`);
+    });
+
+    /* =====================================================================
+       TURN TIMER (counts UP from 00:00 to 01:00, starts only on score entry)
+       ===================================================================== */
+    function renderTimer() {
+      const s = state.timer.seconds;
+      const mm = String(Math.floor(s / 60)).padStart(2, '0');
+      const ss = String(s % 60).padStart(2, '0');
+      $('timerDisplay').textContent = `${mm}:${ss}`;
+      const ring = $('timerRing');
+      ring.style.setProperty('--pct', Math.round((s / TIMER_MAX) * 100));
+      ring.classList.toggle('timer-live', state.timer.running);
+    }
+
+    function startTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+      state.timer.running = true;
+      renderTimer();
+      timerInterval = setInterval(() => {
+        state.timer.seconds += 1;
+        if (state.timer.seconds >= TIMER_MAX) {
+          state.timer.seconds = TIMER_MAX;
+          state.timer.running = false;
+          clearInterval(timerInterval);
+          timerInterval = null;
+          renderTimer();
+          playAlarm();
+          saveState(false);
+          return;
+        }
+        renderTimer();
+        saveState(false);
+      }, 1000);
+    }
+
+    function stopTimer() {
+      if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+      if (state) { state.timer.running = false; }
+    }
+
+    // Reset button: stops alarm, resets to 00:00, and WAITS (does not restart)
+    $('btnResetTimer').addEventListener('click', () => {
+      resetTimer();
+    });
+    function resetTimer() {
+      stopTimer();
+      stopAlarm();
+      if (state) { state.timer.seconds = 0; }
+      renderTimer();
+      $('alarmNote').classList.add('hidden');
+      saveState(false);
+    }
+
+    /* --- Alarm (WebAudio beep loop) --- */
+    function ensureAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      return audioCtx;
+    }
+    function beepOnce() {
+      if (!state.alarmOn) return;
+      try {
+        const ctx = ensureAudio();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = 880;
+        gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.25, ctx.currentTime + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.35);
+        osc.connect(gain).connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.4);
+      } catch (e) { /* audio not available; fail silently */ }
+    }
+    function playAlarm() {
+      $('alarmNote').classList.remove('hidden');
+      $('timerRing').classList.add('ring-alarm');
+      beepOnce();
+      if (alarmInterval) clearInterval(alarmInterval);
+      alarmInterval = setInterval(beepOnce, 700);
+    }
+    function stopAlarm() {
+      if (alarmInterval) { clearInterval(alarmInterval); alarmInterval = null; }
+      $('timerRing').classList.remove('ring-alarm');
+    }
+
+    /* =====================================================================
+       TOTAL → ADJUSTMENT → NET SCORE FLOW
+       ===================================================================== */
+
+    $('btnTotal').addEventListener('click', () => {
+      if (state.adjustment) { return; } // already in adjustment/net-score phase
+      const totals = computeRunningTotals();
+      const lastTotals = totals[totals.length - 1] || state.players.map(() => 0);
+
+      // Rank BEFORE adjustment (1 = best). Lower total wins by default.
+      state.rankBeforeAdjustment = computeRanks(lastTotals, state.lowerWins);
+
+      // Create the empty Adjustment row
+      state.adjustment = state.players.map(() => null);
+
+      saveState(false);
+      renderTable();
+      swapTotalForNetScoreButton();
+      toast("Enter each player's remaining tile value. Winner enters 0.");
+    });
+
+    function swapTotalForNetScoreButton() {
+      const old = $('btnTotal');
+      const btn = document.createElement('button');
+      btn.id = 'btnNetScore';
+      btn.className = 'chip-btn';
+      btn.innerHTML = '<span class="chip-btn-inner">NET SCORE</span>';
+      old.replaceWith(btn);
+      btn.addEventListener('click', onNetScorePressed);
+    }
+
+    // Build the editable Adjustment row
+    function buildAdjustmentRow() {
+      const tr = document.createElement('tr');
+      tr.className = 'row-fade border-t-2 border-accent/30 bg-accent/5';
+      const label = document.createElement('td');
+      label.className = 'sticky-col bg-[#12140f] px-3 py-2.5 font-semibold text-accent';
+      label.textContent = 'Adjustment';
+      tr.appendChild(label);
+
+      state.players.forEach((name, pIdx) => {
+        const td = document.createElement('td');
+        td.className = 'px-2 py-2 text-center';
+        const input = document.createElement('input');
+        input.type = 'number';
+        input.inputMode = 'numeric';
+        input.min = '0';
+        input.step = '1';
+        input.placeholder = '0';
+        input.className = 'score-input w-16 sm:w-20 mx-auto rounded-lg px-2 py-2 text-center';
+        input.value = state.adjustment[pIdx] === null ? '' : state.adjustment[pIdx];
+        input.dataset.player = pIdx;
+        input.disabled = !!state.netScore; // lock once net score computed
+        input.addEventListener('input', onScoreLiveGuard);
+        input.addEventListener('change', (e) => {
+          let raw = e.target.value.trim();
+          if (raw === '') { state.adjustment[pIdx] = null; saveState(false); return; }
+          let val = parseInt(raw, 10);
+          if (isNaN(val) || val < 0) {
+            toast('Only non-negative whole numbers are allowed');
+            e.target.value = state.adjustment[pIdx] === null ? '' : state.adjustment[pIdx];
+            return;
+          }
+          state.adjustment[pIdx] = val;
+          saveState(false);
+        });
+        td.appendChild(input);
+        tr.appendChild(td);
+      });
+      return tr;
+    }
+
+    function onNetScorePressed() {
+      const errEl = $('validationError');
+      errEl.classList.add('hidden');
+
+      // All adjustment values must be filled
+      if (state.adjustment.some(v => v === null)) {
+        errEl.textContent = "Please fill in every player's Adjustment value first.";
+        errEl.classList.remove('hidden');
+        return;
+      }
+
+      // Exactly one player must have Adjustment === 0 (the winner)
+      const zeroIdxs = state.adjustment.map((v, i) => v === 0 ? i : -1).filter(i => i >= 0);
+      if (zeroIdxs.length !== 1) {
+        errEl.textContent = zeroIdxs.length === 0
+          ? 'Exactly one player must enter 0 (the winner). No player has 0 yet.'
+          : 'Exactly one player must enter 0 (the winner). Multiple zeros found.';
+        errEl.classList.remove('hidden');
+        return;
+      }
+
+      const winnerIdx = zeroIdxs[0];
+      const totals = computeRunningTotals();
+      const lastTotals = totals[totals.length - 1] || state.players.map(() => 0);
+
+      const sumOthers = state.adjustment.reduce((sum, v, i) => i === winnerIdx ? sum : sum + v, 0);
+
+      const net = state.players.map((_, i) => {
+        if (i === winnerIdx) {
+          return lastTotals[i] + sumOthers;               // Winner: total + sum of others' adjustments
+        }
+        return lastTotals[i] - state.adjustment[i];        // Others: total - their adjustment
+      });
+
+      state.netScore = net;
+      state.rankAfterNet = computeRanks(net, state.lowerWins);
+
+      saveState(false);
+      renderTable();
+      celebrateWinner(winnerIdx);
+    }
+
+    // Compute 1-indexed ranks from an array of numeric values.
+    // lowerIsBetter=true => smallest value gets rank 1.
+    function computeRanks(values, lowerIsBetter) {
+      const order = values.map((v, i) => ({ v, i })).sort((a, b) => lowerIsBetter ? a.v - b.v : b.v - a.v);
+      const ranks = new Array(values.length);
+      order.forEach((o, pos) => { ranks[o.i] = pos + 1; });
+      return ranks;
+    }
+
+    // Build the Net Score row, including rank + movement indicators
+    function buildNetScoreRow() {
+      const tr = document.createElement('tr');
+      tr.className = 'row-fade border-t-2 border-primary/40 bg-primary/5';
+      const label = document.createElement('td');
+      label.className = 'sticky-col bg-[#0c1220] px-3 py-2.5 font-semibold text-primary';
+      label.textContent = 'Net Score';
+      tr.appendChild(label);
+
+      state.players.forEach((p, pIdx) => {
+        const td = document.createElement('td');
+        td.className = 'px-2 py-2 text-center';
+
+        const before = state.rankBeforeAdjustment[pIdx];
+        const after = state.rankAfterNet[pIdx];
+        const diff = before - after; // positive = moved up (improved rank number decreased)
+
+        let moveHtml = '<span class="rank-same text-xs">—</span>';
+        if (diff > 0) moveHtml = `<span class="rank-up text-xs font-semibold">▲${diff}</span>`;
+        else if (diff < 0) moveHtml = `<span class="rank-down text-xs font-semibold">▼${Math.abs(diff)}</span>`;
+
+        let medalClass = '';
+        let medalEmoji = '';
+        if (after === 1) { medalClass = 'gold-ring'; medalEmoji = '🥇'; }
+        else if (after === 2) { medalClass = 'silver-ring'; medalEmoji = '🥈'; }
+        else if (after === 3) { medalClass = 'bronze-ring'; medalEmoji = '🥉'; }
+
+        const box = document.createElement('div');
+        box.className = `rounded-lg px-2 py-2 ${medalClass} ${after === 1 ? 'winner-pop' : ''}`;
+        box.innerHTML = `
+      <div class="text-base leading-none mb-1">${p.avatar}</div>
+      <div class="font-bold text-base font-tally">${state.netScore[pIdx]}</div>
+      <div class="flex items-center justify-center gap-1 mt-0.5">${moveHtml} <span>${medalEmoji}</span></div>
+    `;
+        td.appendChild(box);
+        tr.appendChild(td);
+      });
+      return tr;
+    }
+
+    /* =====================================================================
+       CONFETTI + WINNER CELEBRATION
+       ===================================================================== */
+    function celebrateWinner(winnerIdx) {
+      const p = state.players[winnerIdx];
+      toast(`🏆 ${p.avatar} ${p.name} wins!`);
+      fireConfetti();
+    }
+
+    function fireConfetti() {
+      const colors = ['#2AC46C', '#F1D5A4', '#FFD873', '#EAF2ED', '#7fe0a8'];
+      const count = 90;
+      for (let i = 0; i < count; i++) {
+        const piece = document.createElement('div');
+        piece.className = 'confetti-piece';
+        piece.style.left = Math.random() * 100 + 'vw';
+        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.animation = `confettiFall ${1.6 + Math.random() * 1.4}s linear forwards`;
+        piece.style.animationDelay = (Math.random() * 0.4) + 's';
+        piece.style.transform = `rotate(${Math.random() * 360}deg)`;
+        document.body.appendChild(piece);
+        setTimeout(() => piece.remove(), 3400);
+      }
+    }
+
+    /* =====================================================================
+       SAVE / RESET GAME
+       ===================================================================== */
+    $('btnSave').addEventListener('click', () => saveState(true));
+
+    $('btnResetGame').addEventListener('click', () => {
+      askConfirm('Reset this game? All progress will be permanently cleared.', () => {
+        stopTimer();
+        stopAlarm();
+        clearState();
+        state = null;
+        goHome();
+        toast('Game reset');
+      });
+    });
+
+    /* =====================================================================
+       SETTINGS MODAL
+       ===================================================================== */
+    $('btnSettings').addEventListener('click', () => {
+      $('toggleAlarm').checked = state.alarmOn;
+      $('toggleLowerWins').checked = state.lowerWins;
+      $('settingsModal').classList.remove('hidden');
+    });
+    $('btnCloseSettings').addEventListener('click', () => {
+      state.alarmOn = $('toggleAlarm').checked;
+      state.lowerWins = $('toggleLowerWins').checked;
+      $('settingsModal').classList.add('hidden');
+      saveState(false);
+      updateLeaderAndCurrentPlayer();
+      renderTable();
+    });
+
+    /* =====================================================================
+       INIT
+       ===================================================================== */
+    (function init() {
+      const saved = loadState();
+      $('btnContinueGame').classList.toggle('hidden', !saved);
+      resetNewGameForm();
+      showScreen('homeScreen');
+    })();
+
+  </script>
+</body>
+
+</html>
