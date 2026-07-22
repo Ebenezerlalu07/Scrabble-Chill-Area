@@ -469,6 +469,79 @@
     #gameScreen {
       position: relative;
       z-index: 1;
+      min-height: 100vh;
+      overflow: hidden;
+
+      background-color: #08120E;
+
+      background-image:
+        /* Emerald Glow */
+        radial-gradient(circle at top left,
+          rgba(42, 196, 108, 0.18) 0%,
+          transparent 35%),
+
+        /* Gold Glow */
+        radial-gradient(circle at top right,
+          rgba(241, 213, 164, 0.14) 0%,
+          transparent 40%),
+
+        /* Bottom Glow */
+        radial-gradient(circle at bottom,
+          rgba(42, 196, 108, 0.08) 0%,
+          transparent 45%),
+
+        /* Grid Horizontal */
+        linear-gradient(rgba(42, 196, 108, .06) 1px,
+          transparent 1px),
+
+        /* Grid Vertical */
+        linear-gradient(90deg,
+          rgba(42, 196, 108, .06) 1px,
+          transparent 1px),
+
+        /* Dark Overlay */
+        linear-gradient(rgba(8, 18, 14, .75),
+          rgba(8, 18, 14, .75)),
+
+        /* Background Image */
+        url("Assets/bg\ 1.jpg");
+
+      background-size:
+        auto,
+        auto,
+        auto,
+        60px 60px,
+        60px 60px,
+        auto,
+        cover;
+
+      background-position:
+        center,
+        center,
+        center,
+        center,
+        center,
+        center,
+        center;
+
+      background-repeat:
+        no-repeat,
+        no-repeat,
+        no-repeat,
+        repeat,
+        repeat,
+        no-repeat,
+        no-repeat;
+
+      background-attachment:
+        scroll,
+        scroll,
+        scroll,
+        scroll,
+        scroll,
+        scroll,
+        fixed;
+      /* Optional: Parallax effect */
     }
 
     .font-display {
@@ -690,15 +763,13 @@
     .chip-btn {
       position: relative;
       border-radius: 9999px;
-      padding: 3px;
-      background: repeating-conic-gradient(#7a6440 0deg 9deg, var(--accent) 9deg 18deg);
-      box-shadow: 0 6px 22px rgba(241, 213, 164, 0.28), 0 2px 6px rgba(0, 0, 0, 0.4);
+
       transition: transform .15s ease, box-shadow .15s ease;
     }
 
     .chip-btn:hover {
       transform: translateY(-2px) scale(1.02);
-      box-shadow: 0 10px 30px rgba(241, 213, 164, 0.4);
+      ;
     }
 
     .chip-btn:active {
@@ -706,13 +777,32 @@
     }
 
     .chip-btn-inner {
-      background: radial-gradient(circle at 35% 30%, #fff7e8, #F1D5A4 55%, #d9b87f 100%);
-      color: #1a1408;
+      background: radial-gradient(circle at 35% 30%,
+          #49D67D 0%,
+          #2AC46C 35%,
+          #1B944E 65%,
+          #126B39 100%);
+
+      color: #fff;
+
+      color: #ffffff;
+
       border-radius: 9999px;
+
       padding: 0.85rem 1.9rem;
+
       font-weight: 800;
+
       letter-spacing: 0.03em;
+
       font-size: 0.85rem;
+
+      text-shadow: 0 1px 2px rgba(0, 0, 0, .35);
+
+      box-shadow:
+        inset 0 2px 3px rgba(255, 255, 255, .35),
+        inset 0 -6px 10px rgba(0, 0, 0, .25),
+        0 8px 20px rgba(42, 196, 108, .35);
     }
 
     /* Circular turn timer — conic-gradient ring filling as seconds pass.
@@ -1175,12 +1265,17 @@
     <header class="glass sticky top-0 z-30 px-4 py-3 sm:px-6 sm:py-4 border-b border-white/5">
       <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3">
         <div class="flex items-center gap-3 min-w-0">
-          <div class="w-10 h-10 rounded-xl btn-primary flex items-center justify-center text-lg shrink-0">🎯</div>
+          <a href="index.html" class="w-10 h-10 flex items-center justify-center shrink-0 overflow-hidden">
+            <img src="Assets/Logo.png" alt="Logo" class="w-9 h-9 object-contain">
+          </a>
+
           <div class="min-w-0">
-            <h1 id="headerGameName" class="font-display font-bold text-base truncate max-w-[38vw] sm:max-w-xs">Game Name
+            <h1 id="headerGameName" class="font-display font-bold text-base truncate max-w-[38vw] sm:max-w-xs">
+              Game Name
             </h1>
-            <p class="text-xs text-white/40 font-tally">Round <span id="headerRound"
-                class="text-primary font-bold">1</span></p>
+            <p class="text-xs text-white/40 font-tally">
+              Round <span id="headerRound" class="text-primary font-bold">1</span>
+            </p>
           </div>
         </div>
 
@@ -1734,7 +1829,7 @@
         totalRow.className = 'border-t border-b border-white/5 bg-primary/[0.05]';
         const totalLabelCell = document.createElement('td');
         totalLabelCell.className = 'sticky-col bg-[#0c1220] px-3 py-2 text-[11px] uppercase tracking-wide text-primary font-semibold';
-        totalLabelCell.textContent = '↳ Running Total';
+        totalLabelCell.textContent = 'Total';
         totalRow.appendChild(totalLabelCell);
 
         state.players.forEach((name, pIdx) => {
@@ -2013,7 +2108,7 @@
       const old = $('btnTotal');
       const btn = document.createElement('button');
       btn.id = 'btnNetScore';
-      btn.className = 'chip-btn';
+      btn.className = '';
       btn.innerHTML = '<span class="chip-btn-inner">NET SCORE</span>';
       old.replaceWith(btn);
       btn.addEventListener('click', onNetScorePressed);
