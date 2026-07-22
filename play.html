@@ -77,6 +77,380 @@
       background-attachment: fixed;
     }
 
+    .winner-modal {
+
+      position: fixed;
+      inset: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      background:
+        linear-gradient(rgba(7, 11, 20, .88), rgba(7, 11, 20, .92));
+
+      backdrop-filter: blur(18px);
+
+      z-index: 99999;
+
+      animation: fadeIn .5s ease;
+
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .winner-card {
+
+      position: relative;
+
+      width: 430px;
+      max-width: 95%;
+
+      padding: 80px 40px 45px;
+
+      border-radius: 35px;
+
+      overflow: hidden;
+
+      text-align: center;
+
+      background: rgba(255, 255, 255, .06);
+
+      border: 1px solid rgba(255, 255, 255, .08);
+
+      backdrop-filter: blur(30px);
+
+      box-shadow:
+
+        0 25px 60px rgba(0, 0, 0, .55),
+        0 0 60px rgba(42, 196, 108, .15);
+
+      animation: popup .6s ease;
+
+    }
+
+    .winner-bg-circle {
+
+      position: absolute;
+
+      border-radius: 50%;
+
+      filter: blur(70px);
+
+      animation: rotateGlow 10s linear infinite;
+
+    }
+
+    .one {
+
+      width: 240px;
+      height: 240px;
+
+      background: #2AC46C;
+
+      top: -120px;
+      left: -100px;
+
+      opacity: .25;
+
+    }
+
+    .two {
+
+      width: 260px;
+      height: 260px;
+
+      background: #F1D5A4;
+
+      bottom: -140px;
+      right: -120px;
+
+      opacity: .18;
+
+    }
+
+    .winner-trophy {
+
+      width: 120px;
+      height: 120px;
+
+      margin: auto;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 70px;
+
+      border-radius: 50%;
+
+      background: linear-gradient(135deg, #FFD54A, #F1D5A4);
+
+      box-shadow:
+
+        0 0 35px rgba(255, 213, 74, .45);
+
+      animation: bounce 2s infinite;
+
+    }
+
+    .winner-avatar {
+
+      width: 90px;
+      height: 90px;
+
+      margin: 25px auto;
+
+      border-radius: 50%;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 45px;
+
+      background: #111827;
+
+      border: 4px solid #2AC46C;
+
+      box-shadow: 0 0 20px rgba(42, 196, 108, .35);
+
+    }
+
+    .winner-badge {
+
+      display: inline-block;
+
+      padding: 8px 20px;
+
+      border-radius: 50px;
+
+      background: #2AC46C;
+
+      color: #071014;
+
+      font-size: 12px;
+
+      font-weight: 700;
+
+      letter-spacing: 3px;
+
+      margin-bottom: 18px;
+
+    }
+
+    #winnerName {
+
+      font-size: 34px;
+
+      font-weight: 700;
+
+      margin-bottom: 12px;
+
+      color: #fff;
+
+    }
+
+    .winner-score {
+
+      font-size: 46px;
+
+      font-weight: 800;
+
+      background: linear-gradient(90deg, #FFD54A, #2AC46C);
+
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+
+      margin-bottom: 22px;
+
+    }
+
+    .winner-line {
+
+      width: 80px;
+      height: 4px;
+
+      margin: 25px auto;
+
+      border-radius: 20px;
+
+      background: #2AC46C;
+
+    }
+
+    .winner-text {
+
+      font-size: 16px;
+
+      color: #cbd5e1;
+
+      margin-bottom: 35px;
+
+    }
+
+    .winner-text span {
+
+      color: #F1D5A4;
+
+      font-weight: 700;
+
+    }
+
+    .winner-btn {
+
+      padding: 16px 42px;
+
+      border: none;
+
+      border-radius: 18px;
+
+      background: linear-gradient(135deg, #2AC46C, #178F4B);
+
+      color: #071014;
+
+      font-size: 17px;
+
+      font-weight: 700;
+
+      cursor: pointer;
+
+      transition: .35s;
+
+      box-shadow:
+
+        0 15px 30px rgba(42, 196, 108, .3);
+
+    }
+
+    .winner-btn:hover {
+
+      transform: translateY(-4px) scale(1.03);
+
+      box-shadow:
+
+        0 20px 40px rgba(42, 196, 108, .45);
+
+    }
+
+    @keyframes popup {
+
+      from {
+
+        transform: translateY(40px) scale(.8);
+
+        opacity: 0;
+
+      }
+
+      to {
+
+        transform: translateY(0) scale(1);
+
+        opacity: 1;
+
+      }
+
+    }
+
+    @keyframes bounce {
+
+      0%,
+      100% {
+
+        transform: translateY(0);
+
+      }
+
+      50% {
+
+        transform: translateY(-12px);
+
+      }
+
+    }
+
+    @keyframes rotateGlow {
+
+      from {
+
+        transform: rotate(0deg);
+
+      }
+
+      to {
+
+        transform: rotate(360deg);
+
+      }
+
+    }
+
+    @keyframes fadeIn {
+
+      from {
+
+        opacity: 0;
+
+      }
+
+      to {
+
+        opacity: 1;
+
+      }
+
+    }
+
+    .hidden {
+
+      display: none;
+
+    }
+
+    @keyframes rotateGlow {
+
+      from {
+
+        transform: rotate(0deg);
+
+      }
+
+      to {
+
+        transform: rotate(360deg);
+
+      }
+
+    }
+
+    @keyframes bounce {
+
+      50% {
+
+        transform: translateY(-15px);
+
+      }
+
+    }
+
+    @keyframes fadeIn {
+
+      from {
+
+        opacity: 0;
+
+      }
+
+      to {
+
+        opacity: 1;
+
+      }
+
+    }
+
     /* Felt-table texture: a faint dot lattice, like a card-table surface,
      sitting under every screen for tactile, "board game" depth. */
     body::before {
@@ -186,6 +560,30 @@
 
     .player-avatar:active {
       transform: scale(0.92);
+    }
+
+    /* Turn-timer duration presets on the New Game screen */
+    .duration-pill {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: rgba(234, 242, 237, 0.7);
+      transition: all .15s ease;
+    }
+
+    .duration-pill:hover {
+      background: rgba(255, 255, 255, 0.09);
+    }
+
+    .duration-pill.active {
+      background: linear-gradient(135deg, #2AC46C, #1f9e57);
+      border-color: transparent;
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(42, 196, 108, 0.35);
     }
 
     /* Small read-only avatar badge used in header / table / rankings */
@@ -336,6 +734,35 @@
       background: conic-gradient(#e15b5b calc(var(--pct)*1%), rgba(225, 91, 91, 0.18) 0);
     }
 
+    #timerRing.ring-warning {
+      background: conic-gradient(var(--accent) calc(var(--pct)*1%), rgba(241, 213, 164, 0.18) 0);
+      animation: heartbeatPulse 1.3s ease-in-out infinite;
+    }
+
+    @keyframes heartbeatPulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      8% {
+        transform: scale(1.14);
+      }
+
+      16% {
+        transform: scale(1);
+      }
+
+      24% {
+        transform: scale(1.08);
+      }
+
+      32% {
+        transform: scale(1);
+      }
+    }
+
     #timerRing .ring-face {
       width: 46px;
       height: 46px;
@@ -345,6 +772,23 @@
       align-items: center;
       justify-content: center;
       box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+    }
+
+    /* Responsive: tighten header/timer real estate on narrow phones */
+    @media (max-width: 380px) {
+      #timerRing {
+        width: 46px;
+        height: 46px;
+      }
+
+      #timerRing .ring-face {
+        width: 36px;
+        height: 36px;
+      }
+
+      #timerDisplay {
+        font-size: 10px;
+      }
     }
 
     /* Fade-in for cards / rows */
@@ -699,6 +1143,20 @@
         <button id="btnAddPlayerSlot" class="text-primary text-sm font-medium mt-2 mb-6 hover:underline">+ Add another
           player</button>
 
+        <label class="block text-xs uppercase tracking-wide text-white/40 mb-2">Turn Timer</label>
+        <div id="durationPills" class="flex flex-wrap gap-2 mb-3">
+          <button type="button" class="duration-pill" data-duration="30">0:30</button>
+          <button type="button" class="duration-pill" data-duration="60">1:00</button>
+          <button type="button" class="duration-pill active" data-duration="120">2:00</button>
+          <button type="button" class="duration-pill" data-duration="180">3:00</button>
+          <button type="button" class="duration-pill" data-duration="300">5:00</button>
+        </div>
+        <div class="flex items-center gap-2 mb-6">
+          <input id="inputCustomDuration" type="number" min="10" max="900" step="5" placeholder="Custom seconds"
+            class="text-input flex-1 min-w-0 rounded-xl px-4 py-2.5 text-sm font-tally" />
+          <span class="text-xs text-white/40 shrink-0">seconds</span>
+        </div>
+
         <p id="newGameError" class="text-red-400 text-sm mb-4 hidden"></p>
 
         <button id="btnStartGame" class="btn btn-primary w-full py-3.5 rounded-xl font-semibold text-white">
@@ -811,15 +1269,30 @@
           </div>
         </label>
       </div>
-      <div class="flex items-center justify-between mb-6">
-        <span class="text-sm text-white/70">Sort: lower score wins</span>
+      <div class="flex items-center justify-between mb-4">
+        <span class="text-sm text-white/70">Voice announcements</span>
         <label class="relative inline-flex items-center cursor-pointer">
-          <input type="checkbox" id="toggleLowerWins" class="sr-only peer" checked>
+          <input type="checkbox" id="toggleVoice" class="sr-only peer" checked>
           <div
             class="w-11 h-6 bg-white/15 peer-checked:bg-primary rounded-full transition-all relative
           after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-5">
           </div>
         </label>
+      </div>
+      <div class="flex items-center justify-between mb-6">
+        <span class="text-sm text-white/70">Sort: lower score wins</span>
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" id="toggleLowerWins" class="sr-only peer">
+          <div
+            class="w-11 h-6 bg-white/15 peer-checked:bg-primary rounded-full transition-all relative
+          after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-5">
+          </div>
+        </label>
+      </div>
+      <div class="mb-6">
+        <label class="block text-sm text-white/70 mb-2">Turn timer (seconds)</label>
+        <input id="inputSettingsDuration" type="number" min="10" max="900" step="5"
+          class="text-input w-full rounded-xl px-4 py-2.5 text-sm font-tally" />
       </div>
       <button id="btnCloseSettings"
         class="btn btn-primary w-full py-2.5 rounded-xl font-semibold text-white">Done</button>
@@ -849,7 +1322,8 @@
     const STORAGE_KEY = 'boardGameScoreKeeper_v1';
     const MAX_PLAYERS = 6;
     const MIN_PLAYERS = 2;
-    const TIMER_MAX = 60; // seconds
+    const DEFAULT_TIMER_SECONDS = 120; // 2:00 default turn timer, configurable per game
+    const WARNING_TONE_INTERVAL_MS = 1300; // gap between each "heartbeat" during the warning phase
 
     // Round-robin marker color per player index (mirrors CSS vars --p1..--p6)
     const PLAYER_COLORS = ['#2AC46C', '#F1D5A4', '#6EC6FF', '#FF8A65', '#B39DFF', '#4FD1C5'];
@@ -866,6 +1340,8 @@
     let state = null;          // active game state (see createNewState)
     let timerInterval = null;  // setInterval handle for the turn timer
     let alarmInterval = null;  // setInterval handle for the beeping alarm
+    let voiceInterval = null;  // setInterval handle for repeating "time's up" voice
+    let warningInterval = null; // setInterval handle for the repeating deep warning tone
     let audioCtx = null;       // lazily-created WebAudio context
     let pendingConfirmAction = null;
 
@@ -881,7 +1357,7 @@
        ===================================================================== */
 
     // Build a brand-new game state object from a name + player list
-    function createNewState(gameName, players) {
+    function createNewState(gameName, players, timerDuration) {
       return {
         gameName: gameName,
         players: players,                            // array of { name, avatar }
@@ -891,9 +1367,11 @@
         rankBeforeAdjustment: null,                  // array of ranks (1 = best)
         rankAfterNet: null,
         currentPlayerIndex: null,
-        timer: { seconds: 0, running: false },
-        lowerWins: true,                             // scoring convention
+        timer: { seconds: 0, running: false, warned: false },
+        timerDuration: timerDuration || DEFAULT_TIMER_SECONDS, // configurable per-game turn timer length
+        lowerWins: false,                            // scoring convention — default: HIGH score wins
         alarmOn: true,
+        voiceOn: true,                                // spoken "time's up" / warning announcements
       };
     }
 
@@ -918,6 +1396,11 @@
           parsed.players = parsed.players.map((p, i) =>
             typeof p === 'string' ? { name: p, avatar: avatarFor(i) } : { avatar: avatarFor(i), ...p }
           );
+        }
+        if (parsed) {
+          if (typeof parsed.timerDuration !== 'number') parsed.timerDuration = DEFAULT_TIMER_SECONDS;
+          if (typeof parsed.voiceOn !== 'boolean') parsed.voiceOn = true;
+          if (parsed.timer && typeof parsed.timer.warned !== 'boolean') parsed.timer.warned = false;
         }
         return parsed;
       } catch (e) { return null; }
@@ -1001,6 +1484,10 @@
       const wrap = $('playerInputs');
       wrap.innerHTML = '';
       for (let i = 0; i < MIN_PLAYERS; i++) addPlayerSlot();
+      // Reset turn-timer selection back to the 2:00 default
+      selectedTimerDuration = DEFAULT_TIMER_SECONDS;
+      qsa('.duration-pill').forEach(p => p.classList.toggle('active', parseInt(p.dataset.duration, 10) === DEFAULT_TIMER_SECONDS));
+      $('inputCustomDuration').value = '';
     }
 
     // Add one more player name input (max 6)
@@ -1016,7 +1503,7 @@
     <button type="button" data-avatar-btn title="Tap to change avatar"
       class="player-avatar" style="--pc:${playerColor(count)}">${avatarFor(count)}</button>
     <input type="text" data-player-input placeholder="Player Name ${idx}" maxlength="18"
-      class="text-input flex-1 rounded-xl px-4 py-2.5 text-sm" />
+      class="text-input flex-1 min-w-0 rounded-xl px-4 py-2.5 text-sm" />
     ${count >= MIN_PLAYERS ? '<button type="button" data-remove-player class="btn-ghost btn w-9 h-9 rounded-xl text-white/60 shrink-0">✕</button>' : ''}
   `;
       wrap.appendChild(row);
@@ -1053,6 +1540,24 @@
 
     $('btnAddPlayerSlot').addEventListener('click', addPlayerSlot);
 
+    // --- Turn timer duration picker ---
+    let selectedTimerDuration = DEFAULT_TIMER_SECONDS;
+    qsa('.duration-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        selectedTimerDuration = parseInt(pill.dataset.duration, 10);
+        qsa('.duration-pill').forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        $('inputCustomDuration').value = '';
+      });
+    });
+    $('inputCustomDuration').addEventListener('input', (e) => {
+      const v = parseInt(e.target.value, 10);
+      if (!isNaN(v) && v > 0) {
+        selectedTimerDuration = v;
+        qsa('.duration-pill').forEach(p => p.classList.remove('active'));
+      }
+    });
+
     $('btnStartGame').addEventListener('click', () => {
       const gameName = $('inputGameName').value.trim() || 'Untitled Game';
       const rows = qsa('#playerInputs > div');
@@ -1076,7 +1581,8 @@
       }
       err.classList.add('hidden');
 
-      state = createNewState(gameName, players);
+      const duration = Math.max(10, selectedTimerDuration || DEFAULT_TIMER_SECONDS);
+      state = createNewState(gameName, players, duration);
       saveState(false);
       enterGameScreen();
     });
@@ -1323,15 +1829,19 @@
     });
 
     /* =====================================================================
-       TURN TIMER (counts UP from 00:00 to 01:00, starts only on score entry)
+       TURN TIMER (counts UP from 00:00 to the configured duration.
+       At the HALFWAY point a repeating low "deep" warning tone starts, as
+       a heads-up that time is running out. At full duration, that stops
+       and the sharp alarm + spoken "Time's up" announcement fire.)
        ===================================================================== */
     function renderTimer() {
       const s = state.timer.seconds;
+      const duration = state.timerDuration || DEFAULT_TIMER_SECONDS;
       const mm = String(Math.floor(s / 60)).padStart(2, '0');
       const ss = String(s % 60).padStart(2, '0');
       $('timerDisplay').textContent = `${mm}:${ss}`;
       const ring = $('timerRing');
-      ring.style.setProperty('--pct', Math.round((s / TIMER_MAX) * 100));
+      ring.style.setProperty('--pct', Math.round((s / duration) * 100));
       ring.classList.toggle('timer-live', state.timer.running);
     }
 
@@ -1340,13 +1850,23 @@
       state.timer.running = true;
       renderTimer();
       timerInterval = setInterval(() => {
+        const duration = state.timerDuration || DEFAULT_TIMER_SECONDS;
+        const warningAt = Math.floor(duration / 2); // halfway point
         state.timer.seconds += 1;
-        if (state.timer.seconds >= TIMER_MAX) {
-          state.timer.seconds = TIMER_MAX;
+
+        // Halfway warning: start the repeating deep tone exactly once, at the midpoint
+        if (!state.timer.warned && warningAt > 0 && state.timer.seconds === warningAt) {
+          state.timer.warned = true;
+          startWarningTone();
+        }
+
+        if (state.timer.seconds >= duration) {
+          state.timer.seconds = duration;
           state.timer.running = false;
           clearInterval(timerInterval);
           timerInterval = null;
           renderTimer();
+          stopWarningTone();
           playAlarm();
           saveState(false);
           return;
@@ -1368,44 +1888,103 @@
     function resetTimer() {
       stopTimer();
       stopAlarm();
-      if (state) { state.timer.seconds = 0; }
+      stopWarningTone();
+      if (state) { state.timer.seconds = 0; state.timer.warned = false; }
       renderTimer();
       $('alarmNote').classList.add('hidden');
       saveState(false);
     }
 
-    /* --- Alarm (WebAudio beep loop) --- */
+    /* --- Voice announcements (Web Speech API) --- */
+    function speak(text) {
+      if (!state || !state.voiceOn) return;
+      if (!('speechSynthesis' in window)) return;
+      try {
+        window.speechSynthesis.cancel(); // don't stack overlapping utterances
+        const u = new SpeechSynthesisUtterance(text);
+        u.rate = 1; u.pitch = 1; u.volume = 1;
+        window.speechSynthesis.speak(u);
+      } catch (e) { /* speech not available; fail silently */ }
+    }
+
+    /* --- Audio: sharp alarm beep (timeout) vs. heartbeat thump (halfway warning) --- */
     function ensureAudio() {
       if (!audioCtx) {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       }
       return audioCtx;
     }
-    function beepOnce() {
+    function playTone(freq, durationSec, volume) {
       if (!state.alarmOn) return;
       try {
         const ctx = ensureAudio();
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
         osc.type = 'sine';
-        osc.frequency.value = 880;
+        osc.frequency.value = freq;
         gain.gain.setValueAtTime(0.0001, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.25, ctx.currentTime + 0.02);
-        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.35);
+        gain.gain.exponentialRampToValueAtTime(volume, ctx.currentTime + 0.03);
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + durationSec);
         osc.connect(gain).connect(ctx.destination);
         osc.start();
-        osc.stop(ctx.currentTime + 0.4);
+        osc.stop(ctx.currentTime + durationSec + 0.05);
       } catch (e) { /* audio not available; fail silently */ }
     }
+    // A single percussive low-frequency "thump" — the building block of the heartbeat sound.
+    // Uses a fast pitch drop + quick decay so it lands like a muscular thud rather than a tone.
+    function thump(delaySec, freq, durationSec, volume) {
+      if (!state.alarmOn) return;
+      try {
+        const ctx = ensureAudio();
+        const start = ctx.currentTime + delaySec;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, start);
+        osc.frequency.exponentialRampToValueAtTime(freq * 0.55, start + durationSec);
+        gain.gain.setValueAtTime(0.0001, start);
+        gain.gain.exponentialRampToValueAtTime(volume, start + 0.015);
+        gain.gain.exponentialRampToValueAtTime(0.0001, start + durationSec);
+        osc.connect(gain).connect(ctx.destination);
+        osc.start(start);
+        osc.stop(start + durationSec + 0.05);
+      } catch (e) { /* audio not available; fail silently */ }
+    }
+    // Sharp high beep — used for the final timeout alarm
+    function beepOnce() { playTone(880, 0.35, 0.25); }
+    // "Lub-dub" heartbeat — two quick low thumps, used for the halfway warning
+    function heartbeatBeep() {
+      thump(0, 72, 0.16, 0.38); // "lub"  — stronger, lower
+      thump(0.22, 92, 0.11, 0.24); // "dub"  — softer, slightly higher, right after
+    }
+
+    // Halfway warning: amber pulsing ring + a repeating heartbeat sound until timeout or reset
+    function startWarningTone() {
+      $('timerRing').classList.add('ring-warning');
+      heartbeatBeep();
+      if (warningInterval) clearInterval(warningInterval);
+      warningInterval = setInterval(heartbeatBeep, WARNING_TONE_INTERVAL_MS);
+    }
+    function stopWarningTone() {
+      if (warningInterval) { clearInterval(warningInterval); warningInterval = null; }
+      $('timerRing').classList.remove('ring-warning');
+    }
+
+    // Timeout alarm: sharp beep loop + spoken "Time's up", repeating until reset
     function playAlarm() {
       $('alarmNote').classList.remove('hidden');
       $('timerRing').classList.add('ring-alarm');
       beepOnce();
+      speak("Time's up");
       if (alarmInterval) clearInterval(alarmInterval);
       alarmInterval = setInterval(beepOnce, 700);
+      if (voiceInterval) clearInterval(voiceInterval);
+      voiceInterval = setInterval(() => speak("Time's up"), 6000);
     }
     function stopAlarm() {
       if (alarmInterval) { clearInterval(alarmInterval); alarmInterval = null; }
+      if (voiceInterval) { clearInterval(voiceInterval); voiceInterval = null; }
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
       $('timerRing').classList.remove('ring-alarm');
     }
 
@@ -1576,9 +2155,22 @@
        CONFETTI + WINNER CELEBRATION
        ===================================================================== */
     function celebrateWinner(winnerIdx) {
-      const p = state.players[winnerIdx];
-      toast(`🏆 ${p.avatar} ${p.name} wins!`);
+
+      const player = state.players[winnerIdx];
+
       fireConfetti();
+
+      document.getElementById("winnerAvatar").innerHTML = player.avatar;
+
+      document.getElementById("winnerName").innerHTML = player.name;
+
+      document.getElementById("winnerScore").innerHTML =
+        "Final Score : " + state.netScore[winnerIdx];
+
+      document.getElementById("winnerModal").classList.remove("hidden");
+
+      playWinnerSound();
+
     }
 
     function fireConfetti() {
@@ -1618,15 +2210,28 @@
        ===================================================================== */
     $('btnSettings').addEventListener('click', () => {
       $('toggleAlarm').checked = state.alarmOn;
+      $('toggleVoice').checked = state.voiceOn;
       $('toggleLowerWins').checked = state.lowerWins;
+      $('inputSettingsDuration').value = state.timerDuration;
       $('settingsModal').classList.remove('hidden');
     });
     $('btnCloseSettings').addEventListener('click', () => {
       state.alarmOn = $('toggleAlarm').checked;
+      state.voiceOn = $('toggleVoice').checked;
       state.lowerWins = $('toggleLowerWins').checked;
+
+      const newDuration = parseInt($('inputSettingsDuration').value, 10);
+      if (!isNaN(newDuration) && newDuration >= 10) {
+        state.timerDuration = newDuration;
+        // Duration changed mid-game: if the timer isn't actively running,
+        // clear any stale warning flag so it can fire again at the new mark.
+        if (!state.timer.running) state.timer.warned = false;
+      }
+
       $('settingsModal').classList.add('hidden');
       saveState(false);
       updateLeaderAndCurrentPlayer();
+      renderTimer();
       renderTable();
     });
 
@@ -1640,7 +2245,70 @@
       showScreen('homeScreen');
     })();
 
+
+    function playWinnerSound() {
+
+      const audio = new Audio("sounds/winner.mp3");
+
+      audio.volume = .7;
+
+      audio.play();
+
+    }
+
   </script>
+
+  <div id="winnerModal" class="winner-modal hidden">
+
+    <div class="winner-card">
+
+      <div class="winner-bg-circle one"></div>
+      <div class="winner-bg-circle two"></div>
+
+      <div class="winner-trophy">
+        🏆
+      </div>
+
+      <div id="winnerAvatar" class="winner-avatar">
+        😀
+      </div>
+
+      <div class="winner-badge">
+        CHAMPION
+      </div>
+
+      <h2 id="winnerName">
+        Alex Johnson
+      </h2>
+
+      <div id="winnerScore" class="winner-score">
+        415 Points
+      </div>
+
+      <div class="winner-line"></div>
+
+      <p class="winner-text">
+        Congratulations! You finished in <span>1st Place</span>
+      </p>
+
+      <button class="winner-btn" onclick="closeWinner()">
+        Continue
+      </button>
+
+      <script>
+        function closeWinner() {
+          const modal = document.getElementById("winnerModal");
+
+          modal.classList.add("hidden");
+
+          // Optional: stop any winner sound here
+          // winnerAudio.pause();
+          // winnerAudio.currentTime = 0;
+        }
+      </script>
+    </div>
+
+  </div>
 </body>
 
 </html>
